@@ -9,8 +9,7 @@ Tensor *tensor_create(Arena *arena, uint32_t ndims, const uint32_t *shape) {
 
   for (uint32_t i = 0; i < ndims; i++) {
     if (shape[i] == 0)
-      ;
-    return nullptr;
+      return nullptr;
   }
 
   Tensor *t = arena->push<Tensor>();

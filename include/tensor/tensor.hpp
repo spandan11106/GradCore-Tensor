@@ -44,5 +44,8 @@ bool tensor_is_contiguous(const Tensor *t);
 // Arithmetics
 bool tensor_add(Tensor *out, const Tensor *a, const Tensor *b);
 bool tensor_sub(Tensor *out, const Tensor *a, const Tensor *b);
+bool tensor_mul(Tensor *out, const Tensor *a, const Tensor *b);
+bool mat_mul(Tensor *out, const Tensor *a, const Tensor *b, bool zero_out,
+             bool transpose_a, bool transpose_b);
 
 } // namespace gradientcore
