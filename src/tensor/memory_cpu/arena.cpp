@@ -122,22 +122,31 @@ void *Arena::push_raw(uint64_t size, bool non_zero) {
 }
 
 void Arena::pop(uint64_t size) {
-  size = std::min(size, this->get_pos());
+  uint64_t cur_pos = this->get_pos();
+  if (size > cur_pos)
+    size = cur_pos;
 
   Arena *curr = this->current;
 
-  while (curr != nullptr && size > curr->pos) {
+  while (curr != nullptr) {
+    uint64_t usable = curr->pos - sizeof(Arena);
+    if (size <= usable)
+      break;
+
+    size -= usable;
     Arena *previous = curr->prev;
-
-    size -= curr->pos;
     platform::mem_release(curr, curr->reserve_size);
-
     curr = previous;
   }
 
   this->current = curr;
-  size = std::min(curr->pos - sizeof(Arena), size);
-  curr->pos -= size;
+
+  if (curr != nullptr) {
+    curr->pos -= size;
+    // Never retreat past the header.
+    if (curr->pos < sizeof(Arena))
+      curr->pos = sizeof(Arena);
+  }
 }
 
 void Arena::pop_to(uint64_t pos) {

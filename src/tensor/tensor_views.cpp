@@ -39,7 +39,7 @@ Tensor *tensor_reshape(Arena *arena, const Tensor *src, uint32_t ndims,
     t->shape[i] = shape[i];
   }
   t->strides[ndims - 1] = 1;
-  for (uint32_t i = ndims - 2; i >= 0; i--) {
+  for (int32_t i = (int32_t)ndims - 2; i >= 0; i--) {
     t->strides[i] = t->strides[i + 1] * t->shape[i + 1];
   }
 

@@ -51,7 +51,7 @@ struct ArenaTemp {
   uint64_t start_pos;
 
   explicit ArenaTemp(Arena *arena)
-      : arena(arena), start_pos(arena->get_pos()) {}
+      : arena(arena), start_pos(arena ? arena->get_pos() : 0) {}
 
   ~ArenaTemp() {
     if (arena)

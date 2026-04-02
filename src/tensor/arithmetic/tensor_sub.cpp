@@ -32,7 +32,7 @@ bool tensor_sub(Tensor *out, const Tensor *a, Tensor *b) {
           a->storage->data[flat_idx_a] - b->storage->data[flat_idx_b];
 
       for (int32_t d = out->ndims - 1; d >= 0; d--) {
-        indices[d]--;
+        indices[d]++;
         if (indices[d] < out->shape[d])
           break;
         indices[d] = 0;
