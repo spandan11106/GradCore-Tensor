@@ -40,6 +40,7 @@ void tensor_clear(Tensor *t);
 bool tensor_copy(Tensor *dst, const Tensor *src);
 void tensor_fill(Tensor *t, float val);
 bool tensor_is_contiguous(const Tensor *t);
+bool shape_match(const Tensor *a, const Tensor *b);
 
 // Arithmetics
 bool tensor_add(Tensor *out, const Tensor *a, const Tensor *b);
@@ -49,5 +50,19 @@ bool mat_mul(Tensor *out, const Tensor *a, const Tensor *b, bool zero_out,
              bool transpose_a, bool transpose_b);
 float tensor_sum(Tensor *t);
 void tensor_scale(Tensor *t, float scale);
+
+// Activation functions
+bool tensor_relu(Tensor *out, const Tensor *in);
+bool tensor_softmax(Tensor *out, const Tensor *in, int32_t dim = -1);
+bool tensor_tanh(Tensor *out, const Tensor *in);
+bool tensor_sigmoid(Tensor *out, const Tensor *in);
+bool tensor_leaky_relu(Tensor *out, const Tensor *in, float alpha);
+bool tensor_elu(Tensor *out, const Tensor *in, float alpha);
+bool tensor_swish(Tensor *out, const Tensor *in);
+bool tensor_gelu(Tensor *out, const Tensor *in);
+bool tensor_relu6(Tensor *out, const Tensor *in);
+bool tensor_hard_sigmoid(Tensor *out, const Tensor *in);
+bool tensor_hard_swish(Tensor *out, const Tensor *in);
+bool tensor_softplus(Tensor *out, const Tensor *in);
 
 } // namespace gradientcore

@@ -1,4 +1,5 @@
 #include "../../include/tensor/tensor.hpp"
+#include <cstdint>
 
 namespace gradientcore {
 
@@ -85,6 +86,16 @@ bool tensor_copy(Tensor *dst, const Tensor *src) {
     }
   }
 
+  return true;
+}
+
+bool shape_match(const Tensor *a, const Tensor *b) {
+  if (a->ndims != b->ndims || a->size != b->size)
+    return false;
+  for (uint32_t i = 0; i < a->ndims; i++) {
+    if (a->shape[i] != b->shape[i])
+      return false;
+  }
   return true;
 }
 
