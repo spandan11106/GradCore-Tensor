@@ -90,12 +90,11 @@ bool tensor_copy(Tensor *dst, const Tensor *src) {
 }
 
 bool shape_match(const Tensor *a, const Tensor *b) {
-  if (a->ndims != b->ndims || a->size != b->size)
+  if (a->ndims != b->ndims)
     return false;
-  for (uint32_t i = 0; i < a->ndims; i++) {
+  for (uint32_t i = 0; i < a->ndims; i++)
     if (a->shape[i] != b->shape[i])
       return false;
-  }
   return true;
 }
 

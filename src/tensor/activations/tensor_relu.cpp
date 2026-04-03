@@ -12,7 +12,7 @@ bool tensor_relu(Tensor *out, const Tensor *in) {
 
   if (tensor_is_contiguous(out) && tensor_is_contiguous(in)) {
 #if defined(_OPENMP)
-#include <omp.h>
+#pragma omp parallel for
 #endif
     for (uint64_t i = 0; i < out->size; i++) {
       float val = in->storage->data[in->offset + i];

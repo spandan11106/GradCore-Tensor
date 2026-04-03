@@ -22,7 +22,7 @@ bool tensor_softplus(Tensor *out, const Tensor *in) {
       if (val > BETA_THRESHOLD) {
         out->storage->data[out->offset + i] = val;
       } else {
-        out->storage->data[out->offset + i] = std::log(1.0f + std::exp(val));
+        out->storage->data[out->offset + i] = std::log1p(std::exp(val));
       }
     }
   } else {
@@ -35,7 +35,7 @@ bool tensor_softplus(Tensor *out, const Tensor *in) {
       if (val > BETA_THRESHOLD) {
         out->storage->data[out_idx] = val;
       } else {
-        out->storage->data[out_idx] = std::log(1.0f + std::exp(val));
+        out->storage->data[out_idx] = std::log1p(std::exp(val));
       }
 
       for (int32_t d = out->ndims - 1; d >= 0; d--) {
