@@ -65,4 +65,9 @@ bool tensor_hard_sigmoid(Tensor *out, const Tensor *in);
 bool tensor_hard_swish(Tensor *out, const Tensor *in);
 bool tensor_softplus(Tensor *out, const Tensor *in);
 
+// Loss functions
+enum Reduction { REDUCTION_NONE, REDUCTION_MEAN, REDUCTION_SUM };
+bool tensor_mse_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                     Reduction reduction);
+
 } // namespace gradientcore
