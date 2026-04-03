@@ -15,7 +15,7 @@ bool tensor_is_contiguous(const Tensor *t) {
   uint64_t expected_stride = 1;
   for (int32_t i = t->ndims - 1; i >= 0; i--) {
     if (t->shape[i] == 1)
-      continue; // Broadcasting dimensions don't break contiguity
+      continue;
     if (t->strides[i] != expected_stride)
       return false;
     expected_stride *= t->shape[i];
@@ -25,8 +25,7 @@ bool tensor_is_contiguous(const Tensor *t) {
 
 void tensor_clear(Tensor *t) {
   if (tensor_is_contiguous(t)) {
-    std::memset(t->storage->data + t->offset, 0,
-                t->storage->size * sizeof(float));
+    std::memset(t->storage->data + t->offset, 0, t->size * sizeof(float));
   } else {
     tensor_fill(t, 0.0f);
   }

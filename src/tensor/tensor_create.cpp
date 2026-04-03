@@ -24,7 +24,8 @@ Tensor *tensor_create(Arena *arena, uint32_t ndims, const uint32_t *shape) {
 
   t->strides[ndims - 1] = 1;
   for (int32_t i = ndims - 2; i >= 0; i--) {
-    t->strides[i] = t->strides[i + 1] * t->shape[i + 1];
+    uint64_t s = (uint64_t)t->strides[i + 1] * t->shape[i + 1];
+    t->strides[i] = (uint32_t)s;
   }
 
   t->storage = arena->push<TensorStorage>();
@@ -36,8 +37,10 @@ Tensor *tensor_create(Arena *arena, uint32_t ndims, const uint32_t *shape) {
 
 Tensor *tensor_create_zeros(Arena *arena, uint32_t ndims,
                             const uint32_t *shape) {
-  return tensor_create(arena, ndims, shape);
-  // Already 0 due to memset
+  Tensor *t = tensor_create(arena, ndims, shape);
+  if (t)
+    tensor_fill(t, 0.0f);
+  return t;
 }
 
 } // namespace gradientcore

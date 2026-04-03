@@ -11,8 +11,8 @@ Tensor *tensor_view(Arena *arena, const Tensor *src) {
   t->offset = src->offset;
   t->storage = src->storage;
 
-  std::memcpy(t->shape, src->shape, sizeof(uint64_t) * MAX_TENSOR_DIMS);
-  std::memcpy(t->strides, src->strides, sizeof(uint64_t) * MAX_TENSOR_DIMS);
+  std::memcpy(t->shape, src->shape, sizeof(uint32_t) * MAX_TENSOR_DIMS);
+  std::memcpy(t->strides, src->strides, sizeof(uint32_t) * MAX_TENSOR_DIMS);
 
   return t;
 }
@@ -53,7 +53,7 @@ Tensor *tensor_transpose(Arena *arena, const Tensor *src, uint32_t dim0,
 
   Tensor *t = tensor_view(arena, src);
 
-  uint32_t temp_shape = t->shape[dim0];
+  uint64_t temp_shape = t->shape[dim0];
   t->shape[dim0] = t->shape[dim1];
   t->shape[dim1] = temp_shape;
 
