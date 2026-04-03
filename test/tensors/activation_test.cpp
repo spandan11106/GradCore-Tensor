@@ -699,25 +699,24 @@ int main() {
   return g_failed == 0 ? 0 : 1;
 }
 
-// Build command:
-// g++ -O2 -fopenmp -I ./include \
-//   -o test_activations \
-//   test/activations/test_activations.cpp \
-//   src/tensor/memory_cpu/arena.cpp \
-//   src/tensor/memory_cpu/platform_linux.cpp \
-//   src/tensor/tensor_create.cpp \
-//   src/tensor/tensor_utils.cpp \
-//   src/tensor/tensor_views.cpp \
-//   src/tensor/activations/tensor_relu.cpp \
-//   src/tensor/activations/tensor_leaky_relu.cpp \
-//   src/tensor/activations/tensor_elu.cpp \
-//   src/tensor/activations/tensor_sigmoid.cpp \
-//   src/tensor/activations/tensor_tanh.cpp \
-//   src/tensor/activations/tensor_softmax.cpp \
-//   src/tensor/activations/tensor_relu6.cpp \
-//   src/tensor/activations/tensor_hard_sigmoid.cpp \
-//   src/tensor/activations/tensor_hard_swish.cpp \
-//   src/tensor/activations/tensor_softplus.cpp \
-//   src/tensor/activations/tensor_gelu.cpp \
-//   src/tensor/activations/tensor_swish.cpp \
-// && ./test_activations
+//  g++ -O2 -fopenmp -I ./include \
+   -o test_activations \
+   test/tensors/activation_test.cpp \
+   src/tensor/memory_cpu/arena.cpp \
+   src/tensor/memory_cpu/platform_linux.cpp \
+   src/tensor/tensor_create.cpp \
+   src/tensor/tensor_utils.cpp \
+   src/tensor/tensor_views.cpp \
+   src/tensor/activations/tensor_relu.cpp \
+   src/tensor/activations/tensor_leaky_relu.cpp \
+   src/tensor/activations/tensor_elu.cpp \
+   src/tensor/activations/tensor_sigmoid.cpp \
+   src/tensor/activations/tensor_tanh.cpp \
+   src/tensor/activations/tensor_softmax.cpp \
+   src/tensor/activations/tensor_relu6.cpp \
+   src/tensor/activations/tensor_hard_sigmoid.cpp \
+   src/tensor/activations/tensor_hard_swish.cpp \
+   src/tensor/activations/tensor_softplus.cpp \
+   src/tensor/activations/tensor_gelu.cpp \
+   src/tensor/activations/tensor_swish.cpp \
+ && ./test_activations

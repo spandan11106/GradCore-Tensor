@@ -126,14 +126,17 @@ void Arena::pop(uint64_t size) {
   if (size > cur_pos)
     size = cur_pos;
 
+  uint64_t target_pos = cur_pos - size;
   Arena *curr = this->current;
 
   while (curr != nullptr) {
-    uint64_t usable = curr->pos - sizeof(Arena);
-    if (size <= usable)
+    uint64_t header_end =
+        (sizeof(Arena) + ARENA_ALIGN - 1) & ~(ARENA_ALIGN - 1);
+    uint64_t chunk_user_start = curr->base_pos + header_end;
+
+    if (target_pos >= chunk_user_start)
       break;
 
-    size -= usable;
     Arena *previous = curr->prev;
     platform::mem_release(curr, curr->reserve_size);
     curr = previous;
@@ -142,10 +145,10 @@ void Arena::pop(uint64_t size) {
   this->current = curr;
 
   if (curr != nullptr) {
-    curr->pos -= size;
-    // Never retreat past the header.
-    if (curr->pos < sizeof(Arena))
-      curr->pos = sizeof(Arena);
+    uint64_t header_end =
+        (sizeof(Arena) + ARENA_ALIGN - 1) & ~(ARENA_ALIGN - 1);
+    uint64_t new_pos = target_pos - curr->base_pos;
+    curr->pos = (new_pos < header_end) ? header_end : new_pos;
   }
 }
 

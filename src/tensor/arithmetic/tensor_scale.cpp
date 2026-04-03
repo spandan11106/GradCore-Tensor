@@ -15,7 +15,7 @@ void tensor_scale(Tensor *t, float scale) {
     float *data = t->storage->data + t->offset;
 
 #if defined(_OPENMP)
-#pragma omp parallel for reduction(+ : total_sum)
+#pragma omp parallel for
 #endif
 
     for (uint64_t i = 0; i < t->size; i++) {

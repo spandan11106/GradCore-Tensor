@@ -1,6 +1,6 @@
 #include "../../../include/tensor/tensor.hpp"
 
-#if defined(_OPENMC)
+#if defined(_OPENMP)
 #include <omp.h>
 #endif
 

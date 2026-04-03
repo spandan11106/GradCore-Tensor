@@ -77,7 +77,9 @@ static void matmul_2d(float *__restrict__ out, const float *__restrict__ a,
                       uint32_t N, uint64_t a_stride_m, uint64_t a_stride_k,
                       uint64_t b_stride_k, uint64_t b_stride_n,
                       uint64_t out_stride_m, uint64_t out_stride_n) {
+#if defined(_OPENMP)
 #pragma omp parallel for schedule(dynamic, 1)
+#endif
   for (uint32_t m_block = 0; m_block < M; m_block += BLOCK_M) {
     uint32_t m_end = std::min(M, m_block + BLOCK_M);
 

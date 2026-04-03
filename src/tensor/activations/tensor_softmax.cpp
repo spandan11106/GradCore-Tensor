@@ -50,7 +50,7 @@ bool tensor_softmax(Tensor *out, const Tensor *in, int32_t dim) {
     uint64_t out_row_offset = out->offset;
     uint64_t temp_idx = batch;
 
-    for (int32_t d = 0; d < outer_dims; d++) { // ← direction flipped
+    for (int32_t d = outer_dims - 1; d >= 0; d--) {
       uint32_t coord = temp_idx % outer_shape[d];
       temp_idx /= outer_shape[d];
       in_row_offset += coord * outer_in_strides[d];

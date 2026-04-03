@@ -25,7 +25,8 @@ bool tensor_is_contiguous(const Tensor *t) {
 
 void tensor_clear(Tensor *t) {
   if (tensor_is_contiguous(t)) {
-    std::memset(t->storage->data + t->offset, 0, t->size * sizeof(float));
+    std::memset(t->storage->data + t->offset, 0,
+                t->storage->size * sizeof(float));
   } else {
     tensor_fill(t, 0.0f);
   }

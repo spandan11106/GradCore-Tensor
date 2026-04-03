@@ -3,7 +3,7 @@
 
 namespace gradientcore {
 
-bool tensor_mul(Tensor *out, const Tensor *a, Tensor *b) {
+bool tensor_mul(Tensor *out, const Tensor *a, const Tensor *b) {
   if (out == nullptr || a == nullptr || b == nullptr)
     return false;
   if (a->ndims != b->ndims || out->ndims != a->ndims)
