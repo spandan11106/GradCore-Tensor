@@ -47,5 +47,7 @@ bool tensor_sub(Tensor *out, const Tensor *a, const Tensor *b);
 bool tensor_mul(Tensor *out, const Tensor *a, const Tensor *b);
 bool mat_mul(Tensor *out, const Tensor *a, const Tensor *b, bool zero_out,
              bool transpose_a, bool transpose_b);
+float tensor_sum(Tensor *t);
+void tensor_scale(Tensor *t, float scale);
 
 } // namespace gradientcore
