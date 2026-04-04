@@ -69,5 +69,30 @@ bool tensor_softplus(Tensor *out, const Tensor *in);
 enum Reduction { REDUCTION_NONE, REDUCTION_MEAN, REDUCTION_SUM };
 bool tensor_mse_loss(Tensor *out, const Tensor *pred, const Tensor *target,
                      Reduction reduction);
+bool tensor_l1_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                    Reduction reduction);
+bool tensor_huber_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                       float delta, Reduction reduction);
+bool tensor_bce_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                     Reduction reduction);
+bool tensor_bce_with_logits_loss(Tensor *out, const Tensor *logits,
+                                 const Tensor *target, Reduction reduction);
+bool tensor_cross_entropy_loss(Tensor *out, const Tensor *logits,
+                               const Tensor *target, Reduction reduction);
+bool tensor_nll_loss(Tensor *out, const Tensor *log_probs, const Tensor *target,
+                     Reduction reduction);
+bool tensor_kl_div_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                        Reduction reduction);
+bool tensor_hinge_loss(Tensor *out, const Tensor *pred, const Tensor *target,
+                       Reduction reduction);
+bool tensor_cosine_embedding_loss(Tensor *out, const Tensor *x1,
+                                  const Tensor *x2, const Tensor *target,
+                                  float margin, Reduction reduction);
+bool tensor_triplet_loss(Tensor *out, const Tensor *anchor,
+                         const Tensor *positive, const Tensor *negative,
+                         float margin, Reduction reduction);
+bool tensor_l2_loss(Tensor *out, const Tensor *weights, Reduction reduction);
+bool tensor_l1_regularization(Tensor *out, const Tensor *weights,
+                              Reduction reduction);
 
 } // namespace gradientcore
