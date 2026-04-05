@@ -95,4 +95,22 @@ bool tensor_l2_loss(Tensor *out, const Tensor *weights, Reduction reduction);
 bool tensor_l1_regularization(Tensor *out, const Tensor *weights,
                               Reduction reduction);
 
+// Activation functions grad
+bool tensor_relu_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_softmax_grad(Tensor *out, const Tensor *softmax_out,
+                         const Tensor *grad, int32_t dim = -1);
+bool tensor_tanh_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_sigmoid_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_leaky_relu_grad(Tensor *out, const Tensor *in, const Tensor *grad,
+                            float alpha);
+bool tensor_elu_grad(Tensor *out, const Tensor *in, const Tensor *grad,
+                     float alpha);
+bool tensor_swish_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_gelu_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_relu6_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_hard_sigmoid_grad(Tensor *out, const Tensor *in,
+                              const Tensor *grad);
+bool tensor_hard_swish_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+bool tensor_softplus_grad(Tensor *out, const Tensor *in, const Tensor *grad);
+
 } // namespace gradientcore
