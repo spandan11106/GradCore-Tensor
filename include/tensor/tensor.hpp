@@ -113,4 +113,42 @@ bool tensor_hard_sigmoid_grad(Tensor *out, const Tensor *in,
 bool tensor_hard_swish_grad(Tensor *out, const Tensor *in, const Tensor *grad);
 bool tensor_softplus_grad(Tensor *out, const Tensor *in, const Tensor *grad);
 
+// Loss functions grad
+bool tensor_mse_loss_grad(Tensor *out, const Tensor *pred, const Tensor *target,
+                          const Tensor *grad, Reduction reduction);
+bool tensor_l1_loss_grad(Tensor *out, const Tensor *pred, const Tensor *target,
+                         const Tensor *grad, Reduction reduction);
+bool tensor_huber_loss_grad(Tensor *out, const Tensor *pred,
+                            const Tensor *target, const Tensor *grad,
+                            float delta, Reduction reduction);
+bool tensor_bce_loss_grad(Tensor *out, const Tensor *pred, const Tensor *target,
+                          const Tensor *grad, Reduction reduction);
+bool tensor_bce_with_logits_loss_grad(Tensor *out, const Tensor *logits,
+                                      const Tensor *target, const Tensor *grad,
+                                      Reduction reduction);
+bool tensor_cross_entropy_loss_grad(Tensor *out, const Tensor *logits,
+                                    const Tensor *target, const Tensor *grad,
+                                    Reduction reduction);
+bool tensor_nll_loss_grad(Tensor *out, const Tensor *log_probs,
+                          const Tensor *target, const Tensor *grad,
+                          Reduction reduction);
+bool tensor_kl_div_loss_grad(Tensor *out, const Tensor *pred,
+                             const Tensor *target, const Tensor *grad,
+                             Reduction reduction);
+bool tensor_hinge_loss_grad(Tensor *out, const Tensor *pred,
+                            const Tensor *target, const Tensor *grad,
+                            Reduction reduction);
+bool tensor_cosine_embedding_loss_grad(Tensor *out, const Tensor *x1,
+                                       const Tensor *x2, const Tensor *target,
+                                       const Tensor *grad, float margin,
+                                       Reduction reduction);
+bool tensor_triplet_loss_grad(Tensor *out, const Tensor *anchor,
+                              const Tensor *positive, const Tensor *negative,
+                              const Tensor *grad, float margin,
+                              Reduction reduction);
+bool tensor_l2_loss_grad(Tensor *out, const Tensor *weights, const Tensor *grad,
+                         Reduction reduction);
+bool tensor_l1_regularization_grad(Tensor *out, const Tensor *weights,
+                                   const Tensor *grad, Reduction reduction);
+
 } // namespace gradientcore
