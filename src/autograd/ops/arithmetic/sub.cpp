@@ -1,11 +1,11 @@
-#include "../../../include/autograd/autograd.hpp"
+#include "../../../../include/autograd/autograd.hpp"
 
 namespace gradientcore {
 namespace autograd {
 
-Variable *add(Arena *arena, Variable *a, Variable *b) {
+Variable *sub(Arena *arena, Variable *a, Variable *b) {
   Tensor *out_data = tensor_create_zeros(arena, a->data->ndims, a->data->shape);
-  tensor_add(out_data, a->data, b->data);
+  tensor_sub(out_data, a->data, b->data);
 
   Variable *out = arena->push<Variable>();
   out->data = out_data;
@@ -15,11 +15,11 @@ Variable *add(Arena *arena, Variable *a, Variable *b) {
   if (out->requires_grad) {
     out->grad = tensor_create_zeros(arena, out_data->ndims, out_data->shape);
     out->num_parents = 2;
-    out->parents = arena->push<Edge>(2);
+    out->parents = arena->push_array<Edge>(2);
     out->parents[0] = {a};
     out->parents[1] = {b};
 
-    out->backward_fn = [](Variable *self, Arena *arena) {
+    out->backward_fn = [](Variable *self, Arena *temp_arena) {
       Variable *parent_a = self->parents[0].node;
       Variable *parent_b = self->parents[1].node;
 
@@ -27,7 +27,12 @@ Variable *add(Arena *arena, Variable *a, Variable *b) {
         tensor_add(parent_a->grad, parent_a->grad, self->grad);
       }
       if (parent_b->requires_grad) {
-        tensor_add(parent_b->grad, parent_b->grad, self->grad);
+        // Gradient for subtraction: d(a-b)/db = -1, so negate grad
+        Tensor *neg_grad =
+            tensor_create_zeros(temp_arena, self->grad->ndims, self->grad->shape);
+        tensor_copy(neg_grad, self->grad);
+        tensor_scale(neg_grad, -1.0f);
+        tensor_add(parent_b->grad, parent_b->grad, neg_grad);
       }
     };
   }

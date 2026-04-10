@@ -1,13 +1,13 @@
-#include "../../../include/autograd/autograd.hpp"
+#include "../../../../include/autograd/autograd.hpp"
 
 namespace gradientcore {
 namespace autograd {
 
-Variable *mse_loss(Arena *arena, Variable *pred, Variable *target,
-                   Reduction reduction) {
+Variable *hinge_loss(Arena *arena, Variable *pred, Variable *target,
+                     Reduction reduction) {
   uint32_t scalar_shape[1] = {1};
   Tensor *out_data = tensor_create_zeros(arena, 1, scalar_shape);
-  tensor_mse_loss(out_data, pred->data, target->data, reduction);
+  tensor_hinge_loss(out_data, pred->data, target->data, reduction);
 
   Variable *out = arena->push<Variable>();
   out->data = out_data;
@@ -34,9 +34,9 @@ Variable *mse_loss(Arena *arena, Variable *pred, Variable *target,
       Tensor *local_grad = tensor_create_zeros(temp_arena, parent->grad->ndims,
                                                parent->grad->shape);
 
-      tensor_mse_loss_grad(local_grad, self->saved_tensors[0],
-                           self->saved_tensors[1], self->grad,
-                           static_cast<Reduction>(self->reduction));
+      tensor_hinge_loss_grad(local_grad, self->saved_tensors[0],
+                             self->saved_tensors[1], self->grad,
+                             static_cast<Reduction>(self->reduction));
 
       tensor_add(parent->grad, parent->grad, local_grad);
     };

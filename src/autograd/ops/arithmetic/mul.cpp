@@ -1,13 +1,11 @@
-#include "../../../include/autograd/autograd.hpp"
+#include "../../../../include/autograd/autograd.hpp"
 
 namespace gradientcore {
 namespace autograd {
 
-Variable *matmul(Arena *arena, Variable *a, Variable *b) {
-  uint32_t out_shape[2] = {a->data->shape[0], b->data->shape[1]};
-  Tensor *out_data = tensor_create_zeros(arena, 2, out_shape);
-
-  mat_mul(out_data, a->data, b->data, true, false, false);
+Variable *mul(Arena *arena, Variable *a, Variable *b) {
+  Tensor *out_data = tensor_create_zeros(arena, a->data->ndims, a->data->shape);
+  tensor_mul(out_data, a->data, b->data);
 
   Variable *out = arena->push<Variable>();
   out->data = out_data;
@@ -32,21 +30,24 @@ Variable *matmul(Arena *arena, Variable *a, Variable *b) {
       Tensor *a_data = self->saved_tensors[0];
       Tensor *b_data = self->saved_tensors[1];
 
+      // grad_a = grad_output * b
       if (parent_a->requires_grad) {
         Tensor *local_grad_a = tensor_create_zeros(
             temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
-        mat_mul(local_grad_a, self->grad, b_data, true, false, true);
+        tensor_mul(local_grad_a, self->grad, b_data);
         tensor_add(parent_a->grad, parent_a->grad, local_grad_a);
       }
 
+      // grad_b = grad_output * a
       if (parent_b->requires_grad) {
         Tensor *local_grad_b = tensor_create_zeros(
             temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
-        mat_mul(local_grad_b, a_data, self->grad, true, true, false);
+        tensor_mul(local_grad_b, self->grad, a_data);
         tensor_add(parent_b->grad, parent_b->grad, local_grad_b);
       }
     };
   }
+
   return out;
 }
 
