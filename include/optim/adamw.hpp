@@ -1,0 +1,34 @@
+#pragma once
+#include "../autograd/autograd.hpp"
+#include <vector>
+
+namespace gradientcore {
+namespace optim {
+
+struct AdamWState {
+  Tensor *m;
+  Tensor *v;
+};
+
+class AdamW {
+private:
+  std::vector<autograd::Variable *> parameters;
+  std::vector<AdamWState> states;
+  float learning_rate;
+  float beta1;
+  float beta2;
+  float epsilon;
+  float weight_decay;
+  uint32_t t;
+
+public:
+  AdamW(Arena *perm_arena, const std::vector<autograd::Variable *> &params,
+        float lr = 0.001f, float b1 = 0.9f, float b2 = 0.999f,
+        float eps = 1e-8f, float weight_decay = 0.01f);
+
+  void step();
+  void zero_grad();
+};
+
+} // namespace optim
+} // namespace gradientcore
