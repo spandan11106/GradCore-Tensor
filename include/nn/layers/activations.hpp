@@ -4,6 +4,14 @@
 namespace gradientcore {
 namespace nn {
 
+class Identity : public Module {
+public:
+  autograd::Variable *forward(Arena *compute_arena,
+                              autograd::Variable *x) override {
+    return x;
+  }
+};
+
 class ReLU : public Module {
 public:
   autograd::Variable *forward(Arena *compute_arena,
