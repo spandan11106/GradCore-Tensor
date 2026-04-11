@@ -2,6 +2,7 @@
 
 #include "memory_cpu/arena.hpp"
 #include <cstdint>
+#include <sys/types.h>
 
 namespace gradientcore {
 
@@ -41,6 +42,8 @@ bool tensor_copy(Tensor *dst, const Tensor *src);
 void tensor_fill(Tensor *t, float val);
 bool tensor_is_contiguous(const Tensor *t);
 bool shape_match(const Tensor *a, const Tensor *b);
+bool tensor_check_broadcastable(const Tensor *a, const Tensor *b,
+                                uint32_t *out_ndims, uint32_t *out_shape);
 
 // Arithmetics
 bool tensor_add(Tensor *out, const Tensor *a, const Tensor *b);
@@ -49,6 +52,7 @@ bool tensor_mul(Tensor *out, const Tensor *a, const Tensor *b);
 bool mat_mul(Tensor *out, const Tensor *a, const Tensor *b, bool zero_out,
              bool transpose_a, bool transpose_b);
 float tensor_sum(Tensor *t);
+bool tensor_sum_to_shape(Tensor *out, const Tensor *in);
 void tensor_scale(Tensor *t, float scale);
 
 // Activation functions

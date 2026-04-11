@@ -6,15 +6,22 @@ namespace gradientcore {
 bool tensor_add(Tensor *out, const Tensor *a, const Tensor *b) {
   if (out == nullptr || a == nullptr || b == nullptr)
     return false;
-  if (a->ndims != b->ndims || out->ndims != a->ndims)
+
+  uint32_t expected_ndims;
+  uint32_t expected_shape[MAX_TENSOR_DIMS];
+  if (!tensor_check_broadcastable(a, b, &expected_ndims, expected_shape))
     return false;
 
-  for (uint32_t i = 0; i < a->ndims; i++) {
-    if (a->shape[i] != b->shape[i] || out->shape[i] != a->shape[i])
+  if (out->ndims != expected_ndims)
+    return false;
+  for (uint32_t i = 0; i < expected_ndims; i++) {
+    if (out->shape[i] != expected_shape[i])
       return false;
   }
 
-  if (tensor_is_contiguous(a) && tensor_is_contiguous(b) &&
+  bool exact_match = (a->ndims == b->ndims) && shape_match(a, b);
+
+  if (exact_match && tensor_is_contiguous(a) && tensor_is_contiguous(b) &&
       tensor_is_contiguous(out)) {
     for (uint64_t i = 0; i < out->size; i++) {
       out->storage->data[out->offset + i] =
@@ -25,8 +32,24 @@ bool tensor_add(Tensor *out, const Tensor *a, const Tensor *b) {
 
     for (uint64_t i = 0; i < out->size; i++) {
       uint64_t flat_idx_out = tensor_get_flat_index(out, indices);
-      uint64_t flat_idx_a = tensor_get_flat_index(a, indices);
-      uint64_t flat_idx_b = tensor_get_flat_index(b, indices);
+
+      uint64_t flat_idx_a = a->offset;
+      for (uint32_t d = 0; d < a->ndims; d++) {
+        uint32_t out_d = out->ndims - a->ndims + d;
+        uint32_t idx = indices[out_d];
+        if (a->shape[d] == 1)
+          idx = 0;
+        flat_idx_a += idx * a->strides[d];
+      }
+
+      uint64_t flat_idx_b = b->offset;
+      for (uint32_t d = 0; d < b->ndims; d++) {
+        uint32_t out_d = out->ndims - b->ndims + d;
+        uint32_t idx = indices[out_d];
+        if (b->shape[d] == 1)
+          idx = 0;
+        flat_idx_b += idx * b->strides[d];
+      }
 
       out->storage->data[flat_idx_out] =
           a->storage->data[flat_idx_a] + b->storage->data[flat_idx_b];

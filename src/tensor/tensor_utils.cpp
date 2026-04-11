@@ -1,4 +1,5 @@
 #include "../../include/tensor/tensor.hpp"
+#include <algorithm>
 #include <cstdint>
 
 namespace gradientcore {
@@ -95,6 +96,32 @@ bool shape_match(const Tensor *a, const Tensor *b) {
   for (uint32_t i = 0; i < a->ndims; i++)
     if (a->shape[i] != b->shape[i])
       return false;
+  return true;
+}
+
+bool tensor_check_broadcastable(const Tensor *a, const Tensor *b,
+                                uint32_t *out_ndims, uint32_t *out_shape) {
+  if (a == nullptr || b == nullptr)
+    return false;
+
+  uint32_t max_ndims = std::max(a->ndims, b->ndims);
+  if (max_ndims > MAX_TENSOR_DIMS)
+    return false;
+
+  for (uint32_t i = 0; i < max_ndims; i++) {
+    uint32_t dim_a =
+        (i < max_ndims - a->ndims) ? 1 : a->shape[i - (max_ndims - a->ndims)];
+    uint32_t dim_b =
+        (i < max_ndims - b->ndims) ? 1 : b->shape[i - (max_ndims - b->ndims)];
+
+    if (dim_a != dim_b && dim_a != 1 && dim_b != 1) {
+      return false;
+    }
+
+    out_shape[i] = std::max(dim_a, dim_b);
+  }
+
+  *out_ndims = max_ndims;
   return true;
 }
 

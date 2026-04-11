@@ -24,10 +24,16 @@ Variable *add(Arena *arena, Variable *a, Variable *b) {
       Variable *parent_b = self->parents[1].node;
 
       if (parent_a->requires_grad) {
-        tensor_add(parent_a->grad, parent_a->grad, self->grad);
+        Tensor *reduced_grad = tensor_create_zeros(
+            temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
+        tensor_sum_to_shape(reduced_grad, self->grad);
+        tensor_add(parent_a->grad, parent_a->grad, reduced_grad);
       }
       if (parent_b->requires_grad) {
-        tensor_add(parent_b->grad, parent_b->grad, self->grad);
+        Tensor *reduced_grad = tensor_create_zeros(
+            temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
+        tensor_sum_to_shape(reduced_grad, self->grad);
+        tensor_add(parent_b->grad, parent_b->grad, reduced_grad);
       }
     };
   }
