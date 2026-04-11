@@ -1,4 +1,4 @@
-#include "../../include/optim/sdg.hpp"
+#include "../../include/optim/sgd.hpp"
 
 namespace gradientcore {
 namespace optim {
