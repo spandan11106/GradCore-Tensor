@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <map>
 
 namespace gradientcore {
 namespace nn {
@@ -17,10 +18,13 @@ protected:
   std::vector<autograd::Variable *> _parameters;
   std::vector<Module *> _modules;
   bool _training;
-  std::vector<ForwardHook> _forward_hooks;  
+  std::vector<ForwardHook> _forward_hooks;
+  mutable std::vector<autograd::Variable *> _cached_parameters;
+  mutable std::map<std::string, autograd::Variable *> _named_parameters;
+  mutable bool _parameters_cached;  
 
 public:
-  Module() : _training(true) {}
+  Module() : _training(true), _parameters_cached(false) {}
   
   virtual ~Module() = default;
 
@@ -37,12 +41,43 @@ public:
 
   void register_parameter(autograd::Variable *param) {
     _parameters.push_back(param);
+    _parameters_cached = false;
   }
 
-  void register_module(Module *module) { _modules.push_back(module); }
+  void register_module(Module *module) {
+    _modules.push_back(module);
+    _parameters_cached = false;
+  }
 
   void register_forward_hook(ForwardHook hook) {
     _forward_hooks.push_back(hook);
+  }
+
+  void _build_parameters_recursive(const std::string &prefix = "") {
+    for (size_t i = 0; i < _parameters.size(); i++) {
+      std::string param_name = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
+      _cached_parameters.push_back(_parameters[i]);
+      _named_parameters[param_name] = _parameters[i];
+    }
+    
+    for (size_t i = 0; i < _modules.size(); i++) {
+      auto *m = _modules[i];
+      std::string module_prefix = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
+      m->_build_parameters_recursive(module_prefix);
+    }
+  }
+
+  void _build_named_parameters_recursive(const std::string &prefix = "") {
+    for (size_t i = 0; i < _parameters.size(); i++) {
+      std::string param_name = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
+      _named_parameters[param_name] = _parameters[i];
+    }
+    
+    for (size_t i = 0; i < _modules.size(); i++) {
+      auto *m = _modules[i];
+      std::string module_prefix = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
+      m->_build_named_parameters_recursive(module_prefix);
+    }
   }
 
   bool save(const std::string &path, const std::string &format = "binary") const;
@@ -50,12 +85,22 @@ public:
   bool load(const std::string &path, Arena *arena);
 
   virtual std::vector<autograd::Variable *> parameters() {
-    std::vector<autograd::Variable *> all_params = _parameters;
-    for (auto *m : _modules) {
-      auto sub_params = m->parameters();
-      all_params.insert(all_params.end(), sub_params.begin(), sub_params.end());
+    if (!_parameters_cached) {
+      _cached_parameters.clear();
+      _build_parameters_recursive();
+      _parameters_cached = true;
     }
-    return all_params;
+    return _cached_parameters;
+  }
+
+  virtual std::map<std::string, autograd::Variable *> named_parameters() {
+    if (!_parameters_cached) {
+      _cached_parameters.clear();
+      _named_parameters.clear();
+      _build_named_parameters_recursive();
+      _parameters_cached = true;
+    }
+    return _named_parameters;
   }
 
   virtual uint64_t num_parameters() {
