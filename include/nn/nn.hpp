@@ -39,6 +39,8 @@
 // Layer implementations
 #include "layers/activations.hpp"
 #include "layers/linear.hpp"
+#include "layers/batchnorm.hpp"
+#include "layers/dropout.hpp"
 
 // Loss functions
 #include "losses/loss.hpp"
