@@ -23,7 +23,7 @@ public:
           float lr = 0.01f, float alpha = 0.99f, float eps = 1e-8f,
           float weight_decay = 0.0f);
 
-  void step();
+  void step(Arena *temp_arena = nullptr);
   void zero_grad();
 };
 

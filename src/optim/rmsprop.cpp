@@ -1,4 +1,4 @@
-#include "../../include/optim/rmsprop.hpp"
+#include "optim/rmsprop.hpp"
 #include <cmath>
 
 #if defined(_OPENMP)
@@ -25,7 +25,7 @@ RMSprop::RMSprop(Arena *perm_arena,
   }
 }
 
-void RMSprop::step() {
+void RMSprop::step(Arena *temp_arena) {
   for (size_t i = 0; i < parameters.size(); i++) {
     auto *p = parameters[i];
     if (!p->requires_grad || !p->grad)

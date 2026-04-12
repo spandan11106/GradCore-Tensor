@@ -1,4 +1,4 @@
-#include "../../include/optim/adamw.hpp"
+#include "optim/adamw.hpp"
 #include <cmath>
 
 #if defined(_OPENMP)
@@ -26,7 +26,7 @@ AdamW::AdamW(Arena *perm_arena, const std::vector<autograd::Variable *> &params,
   }
 }
 
-void AdamW::step() {
+void AdamW::step(Arena *temp_arena) {
   t++;
   float m_hat_correction = 1.0f / (1.0f - std::pow(beta1, t));
   float v_hat_correction = 1.0f / (1.0f - std::pow(beta2, t));

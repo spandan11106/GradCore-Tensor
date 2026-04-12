@@ -1,4 +1,4 @@
-#include "../../include/tensor/tensor.hpp"
+#include "tensor/tensor.hpp"
 #include <algorithm>
 #include <cstdint>
 

@@ -1,4 +1,4 @@
-#include "../../include/nn/data/dataset.hpp"
+#include "nn/data/dataset.hpp"
 #include <iostream>
 #include <cstring>
 

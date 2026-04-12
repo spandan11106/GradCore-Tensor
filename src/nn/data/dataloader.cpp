@@ -1,4 +1,4 @@
-#include "../../include/nn/data/dataloader.hpp"
+#include "nn/data/dataloader.hpp"
 #include <iostream>
 #include <algorithm>
 #include <cmath>

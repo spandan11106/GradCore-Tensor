@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+
+# Define the GradientCore target
+include("${CMAKE_CURRENT_LIST_DIR}/GradientCoreTargets.cmake")
+
+# Export target for find_package
+set(GradientCore_FOUND TRUE)

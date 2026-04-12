@@ -21,7 +21,7 @@ public:
   Adagrad(Arena *perm_arena, const std::vector<autograd::Variable *> &params,
           float lr = 0.01f, float eps = 1e-10f, float weight_decay = 0.0f);
 
-  void step();
+  void step(Arena *temp_arena = nullptr);
   void zero_grad();
 };
 

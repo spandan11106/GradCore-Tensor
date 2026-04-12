@@ -1,0 +1,100 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+dist/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Compiled object files
+*.o
+*.obj
+*.gch
+*.pch
+
+# Compiled library files
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+*.a
+
+# Compiled executable files
+*.exe
+*.out
+*.app
+
+# Dependency files
+*.d
+*.dep
+
+# IDE and Editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.clang_complete
+.clangd/
+
+# Generated documentation
+docs/build/
+docs/_build/
+*.doxygen_sqlite3db
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Testing artifacts
+test_results/
+*.gcda
+*.gcno
+coverage/
+*.prof
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+
+# OS specific files
+.DS_Store
+Thumbs.db
+*.lnk
+
+# Compiler specific
+.ycm_extra_conf.py
+compile_commands.json
+
+# Local development
+local/
+temp/
+scratch/
+
+# IDE directories
+.vscode/settings.json
+.vscode/launch.json
+.environment
+.env
+
+# Keep source files, headers, and config
+!*.cpp
+!*.hpp
+!*.h
+!CMakeLists.txt
+!.gitignore

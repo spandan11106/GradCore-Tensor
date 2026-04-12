@@ -1,4 +1,4 @@
-#include "../../include/optim/adam.hpp"
+#include "optim/adam.hpp"
 #include <cmath>
 
 #if defined(_OPENMP)
@@ -28,7 +28,7 @@ Adam::Adam(Arena *perm_arena, const std::vector<autograd::Variable *> &params,
   }
 }
 
-void Adam::step() {
+void Adam::step(Arena *temp_arena) {
   t++;
   for (size_t i = 0; i < parameters.size(); i++) {
     auto *p = parameters[i];

@@ -1,5 +1,5 @@
-#include "../../include/tensor/prng.hpp"
-#include "../../include/tensor/memory_cpu/platform.hpp"
+#include "tensor/prng.hpp"
+#include "tensor/memory_cpu/platform.hpp"
 #include <cmath>
 
 namespace gradientcore {

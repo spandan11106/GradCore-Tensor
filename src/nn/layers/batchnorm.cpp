@@ -97,7 +97,7 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
       return nullptr;
     }
 
-    autograd::Variable *out = autograd::create_variable(compute_arena, out_tensor, true);
+    autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
     
     float *in_data = x->data->storage->data + x->data->offset;
     float *out_data = out->data->storage->data + out->data->offset;
@@ -121,7 +121,7 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
       return nullptr;
     }
 
-    autograd::Variable *out = autograd::create_variable(compute_arena, out_tensor, true);
+    autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
     
     float *in_data = x->data->storage->data + x->data->offset;
     float *out_data = out->data->storage->data + out->data->offset;
@@ -235,7 +235,7 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
     return nullptr;
   }
 
-  autograd::Variable *out = autograd::create_variable(compute_arena, out_tensor, true);
+  autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
   
   float *in_data = x->data->storage->data + x->data->offset;
   float *out_data = out->data->storage->data + out->data->offset;

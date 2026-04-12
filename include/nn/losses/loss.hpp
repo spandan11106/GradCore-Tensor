@@ -199,7 +199,7 @@ public:
       std::cerr << "Error: Invalid input to CosineEmbeddingLoss" << std::endl;
       return nullptr;
     }
-    return autograd::cosine_embedding_loss(compute_arena, x1, x2, margin, target, reduction);
+    return autograd::cosine_embedding_loss(compute_arena, x1, x2, target, margin, reduction);
   }
 
   // Base class override (not typically used for this loss)

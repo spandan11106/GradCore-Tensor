@@ -1,4 +1,4 @@
-#include "../../include/nn/core/module.hpp"
+#include "nn/core/module.hpp"
 
 namespace gradientcore {
 namespace nn {

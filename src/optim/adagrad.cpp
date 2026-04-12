@@ -1,4 +1,4 @@
-#include "../../include/optim/adagrad.hpp"
+#include "optim/adagrad.hpp"
 #include <cmath>
 
 #if defined(_OPENMP)
@@ -25,7 +25,7 @@ Adagrad::Adagrad(Arena *perm_arena,
   }
 }
 
-void Adagrad::step() {
+void Adagrad::step(Arena *temp_arena) {
   for (size_t i = 0; i < parameters.size(); i++) {
     auto *p = parameters[i];
     if (!p->requires_grad || !p->grad)

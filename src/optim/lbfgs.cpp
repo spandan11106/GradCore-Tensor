@@ -1,5 +1,5 @@
-#include "../../include/optim/lbfgs.hpp"
-#include "../../include/optim/optim_utils.hpp"
+#include "optim/lbfgs.hpp"
+#include "optim/optim_utils.hpp"
 #include <cmath>
 
 namespace gradientcore {

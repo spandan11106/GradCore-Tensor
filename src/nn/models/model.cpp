@@ -49,7 +49,7 @@ void* Model::create_optimizer() {
   switch (optimizer_type) {
     case OptimizerType::ADAM: {
       optim::Adam *opt = perm_arena->push<optim::Adam>();
-      new (opt) optim::Adam(params, learning_rate);
+      new (opt) optim::Adam(perm_arena, params, learning_rate);
       return opt;
     }
     case OptimizerType::SGD: {
@@ -59,17 +59,17 @@ void* Model::create_optimizer() {
     }
     case OptimizerType::ADAMW: {
       optim::AdamW *opt = perm_arena->push<optim::AdamW>();
-      new (opt) optim::AdamW(params, learning_rate);
+      new (opt) optim::AdamW(perm_arena, params, learning_rate);
       return opt;
     }
     case OptimizerType::RMSPROP: {
-      optim::RMSProp *opt = perm_arena->push<optim::RMSProp>();
-      new (opt) optim::RMSProp(params, learning_rate);
+      optim::RMSprop *opt = perm_arena->push<optim::RMSprop>();
+      new (opt) optim::RMSprop(perm_arena, params, learning_rate);
       return opt;
     }
     case OptimizerType::ADAGRAD: {
       optim::Adagrad *opt = perm_arena->push<optim::Adagrad>();
-      new (opt) optim::Adagrad(params, learning_rate);
+      new (opt) optim::Adagrad(perm_arena, params, learning_rate);
       return opt;
     }
     default:
@@ -183,8 +183,8 @@ TrainingStats Model::train(const std::vector<std::vector<float>> &X_train,
     return empty_stats;
   }
   
-  Dataset *features_dataset = Dataset::create_2d(perm_arena, X_train);
-  Dataset *labels_dataset = Dataset::create_2d(perm_arena, Y_train);
+  data::Dataset *features_dataset = data::Dataset::create_2d(perm_arena, X_train);
+  data::Dataset *labels_dataset = data::Dataset::create_2d(perm_arena, Y_train);
   
   if (!features_dataset || !labels_dataset) {
     std::cerr << "Error: Failed to create datasets" << std::endl;
@@ -261,8 +261,8 @@ float Model::evaluate(const std::vector<std::vector<float>> &X_test,
     return -1.0f;
   }
   
-  Dataset *features_dataset = Dataset::create_2d(perm_arena, X_test);
-  Dataset *labels_dataset = Dataset::create_2d(perm_arena, Y_test);
+  data::Dataset *features_dataset = data::Dataset::create_2d(perm_arena, X_test);
+  data::Dataset *labels_dataset = data::Dataset::create_2d(perm_arena, Y_test);
   
   if (!features_dataset || !labels_dataset) {
     std::cerr << "Error: Failed to create test datasets" << std::endl;

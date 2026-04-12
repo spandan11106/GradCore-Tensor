@@ -26,7 +26,7 @@ public:
         float lr = 0.001f, float b1 = 0.9f, float b2 = 0.999f,
         float eps = 1e-8f, float weight_decay = 0.01f);
 
-  void step();
+  void step(Arena *temp_arena = nullptr);
   void zero_grad();
 };
 
