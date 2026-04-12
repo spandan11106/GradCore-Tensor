@@ -53,13 +53,27 @@ class L2Loss : public LossFunction {
 public:
   L2Loss(Reduction red = REDUCTION_MEAN) { reduction = red; }
 
-  autograd::Variable *forward(Arena *compute_arena, autograd::Variable *weights,
+  autograd::Variable *forward(Arena *compute_arena, autograd::Variable *pred,
                               autograd::Variable *target) override {
-    if (weights == nullptr) {
+    if (pred == nullptr) {
       std::cerr << "Error: Invalid input to L2Loss" << std::endl;
       return nullptr;
     }
-    return autograd::l2_loss(compute_arena, weights, reduction);
+    return autograd::l2_loss(compute_arena, pred, reduction);
+  }
+};
+
+class MAELoss : public LossFunction {
+public:
+  MAELoss(Reduction red = REDUCTION_MEAN) { reduction = red; }
+
+  autograd::Variable *forward(Arena *compute_arena, autograd::Variable *pred,
+                              autograd::Variable *target) override {
+    if (pred == nullptr || target == nullptr) {
+      std::cerr << "Error: Invalid input to MAELoss" << std::endl;
+      return nullptr;
+    }
+    return autograd::l1_loss(compute_arena, pred, target, reduction);
   }
 };
 
@@ -177,9 +191,10 @@ public:
     reduction = red;
   }
 
-  autograd::Variable *forward(Arena *compute_arena, autograd::Variable *x1,
-                              autograd::Variable *x2,
-                              autograd::Variable *target = nullptr) {
+  // Specialized forward for 3-input case (x1, x2, target)
+  autograd::Variable *forward_triplet(Arena *compute_arena, autograd::Variable *x1,
+                                      autograd::Variable *x2,
+                                      autograd::Variable *target = nullptr) {
     if (x1 == nullptr || x2 == nullptr) {
       std::cerr << "Error: Invalid input to CosineEmbeddingLoss" << std::endl;
       return nullptr;
@@ -187,8 +202,10 @@ public:
     return autograd::cosine_embedding_loss(compute_arena, x1, x2, margin, target, reduction);
   }
 
+  // Base class override (not typically used for this loss)
   autograd::Variable *forward(Arena *arena, autograd::Variable *pred,
                               autograd::Variable *target) override {
+    std::cerr << "Warning: CosineEmbeddingLoss requires 3 inputs. Use forward_triplet() instead." << std::endl;
     return nullptr;
   }
 };
@@ -203,9 +220,10 @@ public:
     reduction = red;
   }
 
-  autograd::Variable *forward(Arena *compute_arena, autograd::Variable *anchor,
-                              autograd::Variable *positive,
-                              autograd::Variable *negative) {
+  // Specialized forward for triplet case (anchor, positive, negative)
+  autograd::Variable *forward_triplet(Arena *compute_arena, autograd::Variable *anchor,
+                                      autograd::Variable *positive,
+                                      autograd::Variable *negative) {
     if (anchor == nullptr || positive == nullptr || negative == nullptr) {
       std::cerr << "Error: Invalid input to TripletLoss" << std::endl;
       return nullptr;
@@ -213,8 +231,10 @@ public:
     return autograd::triplet_loss(compute_arena, anchor, positive, negative, margin, reduction);
   }
 
+  // Base class override (not typically used for this loss)
   autograd::Variable *forward(Arena *arena, autograd::Variable *pred,
                               autograd::Variable *target) override {
+    std::cerr << "Warning: TripletLoss requires 3 inputs. Use forward_triplet() instead." << std::endl;
     return nullptr;
   }
 };

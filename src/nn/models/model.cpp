@@ -195,7 +195,7 @@ TrainingStats Model::train(const std::vector<std::vector<float>> &X_train,
     features_dataset,
     labels_dataset,
     batch_size,
-    true,  /
+    true,  
     42     
   );
   

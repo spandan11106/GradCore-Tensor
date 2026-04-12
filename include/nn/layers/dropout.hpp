@@ -10,7 +10,7 @@ namespace nn {
 
 class Dropout : public Module {
 private:
-  float p;  /
+  float p;  
 
 public:
   explicit Dropout(float dropout_prob = 0.5f) : p(dropout_prob) {

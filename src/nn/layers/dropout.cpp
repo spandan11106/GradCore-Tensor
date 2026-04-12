@@ -4,13 +4,6 @@
 namespace gradientcore {
 namespace nn {
 
-Dropout::Dropout(Arena *perm_arena, float p) : p(p) {
-  if (p < 0.0f || p >= 1.0f) {
-    std::cerr << "Error: Dropout probability must be in [0, 1)" << std::endl;
-    this->p = 0.5f; // Default fallback
-  }
-}
-
 autograd::Variable *Dropout::forward(Arena *compute_arena, autograd::Variable *x) {
   if (!x || !x->data) {
     std::cerr << "Error: Invalid input to Dropout" << std::endl;
