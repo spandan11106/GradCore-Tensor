@@ -2,15 +2,22 @@
 #include "../../autograd/autograd.hpp"
 #include <vector>
 #include <iostream>
+#include <functional>
+#include <fstream>
+#include <sstream>
+#include <cstring>
 
 namespace gradientcore {
 namespace nn {
+
+using ForwardHook = std::function<void(autograd::Variable *)>;
 
 class Module {
 protected:
   std::vector<autograd::Variable *> _parameters;
   std::vector<Module *> _modules;
-  bool _training;  
+  bool _training;
+  std::vector<ForwardHook> _forward_hooks;  
 
 public:
   Module() : _training(true) {}
@@ -33,6 +40,14 @@ public:
   }
 
   void register_module(Module *module) { _modules.push_back(module); }
+
+  void register_forward_hook(ForwardHook hook) {
+    _forward_hooks.push_back(hook);
+  }
+
+  bool save(const std::string &path, const std::string &format = "binary") const;
+
+  bool load(const std::string &path, Arena *arena);
 
   virtual std::vector<autograd::Variable *> parameters() {
     std::vector<autograd::Variable *> all_params = _parameters;
@@ -72,7 +87,13 @@ public:
                                       autograd::Variable *x) = 0;
 
   autograd::Variable *operator()(Arena *compute_arena, autograd::Variable *x) {
-    return forward(compute_arena, x);
+    autograd::Variable *output = forward(compute_arena, x);
+    
+    for (auto &hook : _forward_hooks) {
+      hook(output);
+    }
+    
+    return output;
   }
 };
 

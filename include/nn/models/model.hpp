@@ -76,6 +76,22 @@ public:
   void set_epochs(uint32_t num_epochs) { epochs = num_epochs; }
   
   void set_batch_size(uint32_t batch_sz) { batch_size = batch_sz; }
+  
+  bool save(const std::string &path, const std::string &format = "binary") {
+    if (!sequential) {
+      std::cerr << "Error: Model not initialized" << std::endl;
+      return false;
+    }
+    return sequential->save(path, format);
+  }
+  
+  bool load(const std::string &path) {
+    if (!sequential) {
+      std::cerr << "Error: Model not initialized" << std::endl;
+      return false;
+    }
+    return sequential->load(path, perm_arena);
+  }
 };
 
 } // namespace nn
