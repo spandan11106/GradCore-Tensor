@@ -88,35 +88,39 @@ Tensor* DataLoader::create_batch_view(const Dataset *dataset,
     return nullptr;
   }
 
-  Tensor *view = graph_arena->push<Tensor>();
-  const Tensor *original = dataset->get_data();
-  *view = *original;
-
   uint32_t original_ndims = dataset->get_ndims();
   const uint32_t *original_shape = dataset->get_shape();
   uint64_t sample_size = dataset->get_sample_size();
+  const Tensor *original = dataset->get_data();
 
-  view->ndims = original_ndims;
-  view->shape[0] = num_samples;
-  view->size = (uint64_t)num_samples * sample_size;
-
+  uint32_t batch_shape[MAX_TENSOR_DIMS];
+  batch_shape[0] = num_samples;
   for (uint32_t i = 1; i < original_ndims; i++) {
-    view->shape[i] = original_shape[i];
+    batch_shape[i] = original_shape[i];
   }
 
-  for (uint32_t i = 0; i < original_ndims; i++) {
-    out_shape[i] = view->shape[i];
+  if (out_shape) {
+    for (uint32_t i = 0; i < original_ndims; i++) {
+      out_shape[i] = batch_shape[i];
+    }
   }
 
-  uint32_t permuted_idx = indices[start_idx];
-  view->offset = original->offset + (uint64_t)permuted_idx * sample_size;
-
-  view->strides[original_ndims - 1] = 1;
-  for (int32_t i = (int32_t)original_ndims - 2; i >= 0; i--) {
-    view->strides[i] = view->strides[i + 1] * view->shape[i + 1];
+  Tensor *batch_tensor = tensor_create(graph_arena, original_ndims, batch_shape);
+  if (!batch_tensor) {
+    return nullptr;
   }
 
-  return view;
+  float *dst = batch_tensor->storage->data + batch_tensor->offset;
+  const float *src = original->storage->data + original->offset;
+
+  for (uint32_t i = 0; i < num_samples; i++) {
+    uint32_t sample_idx = indices[start_idx + i];
+    std::memcpy(dst + (uint64_t)i * sample_size,
+                src + (uint64_t)sample_idx * sample_size,
+                sample_size * sizeof(float));
+  }
+
+  return batch_tensor;
 }
 
 Batch DataLoader::next(Arena *graph_arena) {
@@ -147,9 +151,10 @@ Batch DataLoader::get_batch(uint32_t batch_idx, Arena *graph_arena) {
                                      batch.shape);
 
   if (labels_dataset != nullptr) {
+    uint32_t label_shape[MAX_TENSOR_DIMS];
     batch.labels = create_batch_view(labels_dataset, start_idx,
                                      actual_batch_size, graph_arena,
-                                     batch.shape);  
+                                     label_shape);
   }
 
   return batch;
