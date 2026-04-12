@@ -36,16 +36,15 @@ float PRNG::randf() {
 }
 
 float PRNG::std_norm() {
-  static const float epsilon = 1e-6f;
+  static const float epsilon = 1e-7f;
 
-  float u1 = epsilon;
-  float u2 = 0.0f;
+  float u1, u2;
 
   do {
-    u1 = this->randf() * 2.0f - 1.0f;
+    u1 = this->randf();
   } while (u1 <= epsilon);
 
-  u2 = this->randf() * 2.0f - 1.0f;
+  u2 = this->randf();
 
   float mag = std::sqrt(-2.0f * std::log(u1));
   float z0 = mag * std::cos(2.0f * 3.141592653f * u2);

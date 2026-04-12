@@ -16,8 +16,8 @@ static void calculate_fans(const Tensor *tensor, uint32_t &fan_in, uint32_t &fan
   }
   
   if (tensor->ndims == 2) {
-    fan_out = tensor->shape[0];
-    fan_in = tensor->shape[1];
+    fan_in = tensor->shape[0];
+    fan_out = tensor->shape[1];
   } else if (tensor->ndims == 1) {
     fan_in = tensor->shape[0];
     fan_out = tensor->shape[0];

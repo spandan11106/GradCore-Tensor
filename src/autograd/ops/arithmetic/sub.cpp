@@ -18,25 +18,26 @@ Variable *sub(Arena *arena, Variable *a, Variable *b) {
     out->parents = arena->push_array<Edge>(2);
     out->parents[0] = {a};
     out->parents[1] = {b};
-  }
-  out->backward_fn = [](Variable *self, Arena *temp_arena) {
-    Variable *parent_a = self->parents[0].node;
-    Variable *parent_b = self->parents[1].node;
 
-    if (parent_a->requires_grad) {
-      Tensor *reduced_grad = tensor_create_zeros(
-          temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
-      tensor_sum_to_shape(reduced_grad, self->grad);
-      tensor_add(parent_a->grad, parent_a->grad, reduced_grad);
-    }
-    if (parent_b->requires_grad) {
-      Tensor *reduced_grad = tensor_create_zeros(
-          temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
-      tensor_sum_to_shape(reduced_grad, self->grad);
-      tensor_scale(reduced_grad, -1.0f); // d(a-b)/db = -1
-      tensor_add(parent_b->grad, parent_b->grad, reduced_grad);
-    }
-  };
+    out->backward_fn = [](Variable *self, Arena *temp_arena) {
+      Variable *parent_a = self->parents[0].node;
+      Variable *parent_b = self->parents[1].node;
+
+      if (parent_a->requires_grad) {
+        Tensor *reduced_grad = tensor_create_zeros(
+            temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
+        tensor_sum_to_shape(reduced_grad, self->grad);
+        tensor_add(parent_a->grad, parent_a->grad, reduced_grad);
+      }
+      if (parent_b->requires_grad) {
+        Tensor *reduced_grad = tensor_create_zeros(
+            temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
+        tensor_sum_to_shape(reduced_grad, self->grad);
+        tensor_scale(reduced_grad, -1.0f); // d(a-b)/db = -1
+        tensor_add(parent_b->grad, parent_b->grad, reduced_grad);
+      }
+    };
+  }
   return out;
 }
 

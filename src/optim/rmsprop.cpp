@@ -57,9 +57,6 @@ void RMSprop::step(Arena *temp_arena) {
     } else {
       uint32_t indices[MAX_TENSOR_DIMS] = {0};
 
-#if defined(_OPENMP)
-#pragma omp parallel for
-#endif
       for (uint64_t k = 0; k < grad->size; k++) {
         uint64_t g_idx = tensor_get_flat_index(grad, indices);
         uint64_t v_idx = tensor_get_flat_index(v, indices);
@@ -67,7 +64,6 @@ void RMSprop::step(Arena *temp_arena) {
 
         float g = grad->storage->data[g_idx];
 
-        // Standard L2 weight decay (coupled)
         if (weight_decay != 0.0f) {
           g += weight_decay * data->storage->data[d_idx];
         }

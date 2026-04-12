@@ -23,29 +23,30 @@ Variable *mul(Arena *arena, Variable *a, Variable *b) {
     out->saved_tensors = arena->push_array<Tensor *>(2);
     out->saved_tensors[0] = a->data;
     out->saved_tensors[1] = b->data;
+
+    out->backward_fn = [](Variable *self, Arena *temp_arena) {
+      Variable *parent_a = self->parents[0].node;
+      Variable *parent_b = self->parents[1].node;
+      Tensor *a_data = self->saved_tensors[0];
+      Tensor *b_data = self->saved_tensors[1];
+
+      // grad_a = grad_output * b
+      if (parent_a->requires_grad) {
+        Tensor *local_grad_a = tensor_create_zeros(
+            temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
+        tensor_mul(local_grad_a, self->grad, b_data);
+        tensor_add(parent_a->grad, parent_a->grad, local_grad_a);
+      }
+
+      // grad_b = grad_output * a
+      if (parent_b->requires_grad) {
+        Tensor *local_grad_b = tensor_create_zeros(
+            temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
+        tensor_mul(local_grad_b, self->grad, a_data);
+        tensor_add(parent_b->grad, parent_b->grad, local_grad_b);
+      }
+    };
   }
-  out->backward_fn = [](Variable *self, Arena *temp_arena) {
-    Variable *parent_a = self->parents[0].node;
-    Variable *parent_b = self->parents[1].node;
-    Tensor *a_data = self->saved_tensors[0];
-    Tensor *b_data = self->saved_tensors[1];
-
-    // grad_a = grad_output * b
-    if (parent_a->requires_grad) {
-      Tensor *local_grad_a = tensor_create_zeros(
-          temp_arena, parent_a->grad->ndims, parent_a->grad->shape);
-      tensor_mul(local_grad_a, self->grad, b_data);
-      tensor_add(parent_a->grad, parent_a->grad, local_grad_a);
-    }
-
-    // grad_b = grad_output * a
-    if (parent_b->requires_grad) {
-      Tensor *local_grad_b = tensor_create_zeros(
-          temp_arena, parent_b->grad->ndims, parent_b->grad->shape);
-      tensor_mul(local_grad_b, self->grad, a_data);
-      tensor_add(parent_b->grad, parent_b->grad, local_grad_b);
-    }
-  };
 
   return out;
 }

@@ -18,7 +18,7 @@ autograd::Variable *Dropout::forward(Arena *compute_arena, autograd::Variable *x
     return x;
   }
 
-  uint32_t out_shape[4];
+  uint32_t out_shape[MAX_TENSOR_DIMS];
   uint32_t ndims = x->data->ndims;
   for (uint32_t i = 0; i < ndims; i++) {
     out_shape[i] = x->data->shape[i];
