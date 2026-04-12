@@ -80,6 +80,7 @@ Thumbs.db
 # Compiler specific
 .ycm_extra_conf.py
 compile_commands.json
+examples/mnist/bin/
 
 # Local development
 local/
