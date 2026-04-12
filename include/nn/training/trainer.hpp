@@ -1,7 +1,8 @@
 #pragma once
 #include "../../tensor/memory_cpu/arena.hpp"
-#include "../layers/module.hpp"
+#include "../core/module.hpp"
 #include "../losses/loss.hpp"
+#include "../data/dataloader.hpp"
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -261,6 +262,162 @@ public:
     }
 
     return total_loss / num_batches;
+  }
+
+  TrainingStats fit_dataloader(data::DataLoader *dataloader, uint32_t epochs,
+                               uint32_t log_interval = 100) {
+    TrainingStats stats;
+
+    if (dataloader == nullptr) {
+      std::cerr << "Error: DataLoader is nullptr" << std::endl;
+      return stats;
+    }
+
+    if (model == nullptr || optimizer == nullptr || criterion == nullptr) {
+      std::cerr << "Error: Trainer not properly initialized" << std::endl;
+      return stats;
+    }
+
+    if (graph_arena == nullptr) {
+      std::cerr << "Error: Arena not valid" << std::endl;
+      return stats;
+    }
+
+    model->train(true);
+
+    uint32_t num_batches = dataloader->get_num_batches();
+    uint32_t batch_size = dataloader->get_batch_size();
+    uint32_t dataset_size = dataloader->get_dataset_size();
+
+    if (verbose) {
+      std::cout << "=== Training Configuration (DataLoader) ===" << std::endl;
+      std::cout << "Epochs: " << epochs << std::endl;
+      std::cout << "Batch Size: " << batch_size << std::endl;
+      std::cout << "Samples: " << dataset_size << std::endl;
+      std::cout << "Batches per Epoch: " << num_batches << std::endl;
+      std::cout << "Model Parameters: " << model->num_parameters() << std::endl;
+      
+      // Print feature shape
+      uint32_t feat_ndims = dataloader->get_feature_ndims();
+      const uint32_t* feat_shape = dataloader->get_feature_shape();
+      std::cout << "Feature shape: [";
+      for (uint32_t i = 0; i < feat_ndims; i++) {
+        if (i > 0) std::cout << ", ";
+        std::cout << feat_shape[i];
+      }
+      std::cout << "]" << std::endl;
+      std::cout << "==========================================" << std::endl << std::endl;
+    }
+
+    for (uint32_t epoch = 0; epoch < epochs; epoch++) {
+      float epoch_loss = 0.0f;
+      uint32_t batch_count = 0;
+
+      dataloader->reset(true);
+
+      while (dataloader->has_next()) {
+        uint64_t start_pos = graph_arena->get_pos();
+
+        data::Batch batch = dataloader->next(graph_arena);
+
+        if (batch.features == nullptr || batch.labels == nullptr) {
+          std::cerr << "Error: Failed to get batch from DataLoader" << std::endl;
+          return stats;
+        }
+
+        autograd::Variable *x = autograd::create_leaf(graph_arena, 
+                                                       batch.features, false);
+        autograd::Variable *y = autograd::create_leaf(graph_arena, 
+                                                       batch.labels, false);
+
+        if (x == nullptr || y == nullptr) {
+          std::cerr << "Error: Failed to create variables from batch" << std::endl;
+          return stats;
+        }
+
+        autograd::Variable *pred = model->forward(graph_arena, x);
+        if (pred == nullptr) {
+          std::cerr << "Error: Model forward pass returned nullptr at epoch " 
+                    << epoch << " batch " << batch_count << std::endl;
+          return stats;
+        }
+
+        autograd::Variable *loss = criterion->forward(graph_arena, pred, y);
+        if (loss == nullptr) {
+          std::cerr << "Error: Loss computation failed" << std::endl;
+          return stats;
+        }
+
+        float batch_loss = loss->data->storage->data[loss->data->offset];
+        epoch_loss += batch_loss;
+        batch_count++;
+        stats.total_batches++;
+
+        optimizer->zero_grad();
+        autograd::backward(graph_arena, loss);
+        optimizer->step(graph_arena);
+
+        graph_arena->pop_to(start_pos);
+      }
+
+      float avg_epoch_loss = epoch_loss / batch_count;
+      stats.train_losses.push_back(avg_epoch_loss);
+      stats.final_loss = avg_epoch_loss;
+      stats.epochs_trained = epoch + 1;
+
+      if (verbose && (epoch % log_interval == 0 || epoch == epochs - 1)) {
+        std::cout << "Epoch [" << (epoch + 1) << "/" << epochs << "] | "
+                  << "Loss: " << avg_epoch_loss << std::endl;
+      }
+    }
+
+    model->eval();
+
+    if (verbose) {
+      std::cout << "Training complete! Final Loss: " << stats.final_loss << std::endl;
+    }
+
+    return stats;
+  }
+
+  float evaluate_dataloader(data::DataLoader *dataloader) {
+    if (dataloader == nullptr) {
+      std::cerr << "Error: DataLoader is nullptr" << std::endl;
+      return -1.0f;
+    }
+
+    model->eval();
+
+    float total_loss = 0.0f;
+    uint32_t num_batches = 0;
+
+    dataloader->reset(false);  
+
+    while (dataloader->has_next()) {
+      uint64_t start_pos = graph_arena->get_pos();
+
+      data::Batch batch = dataloader->next(graph_arena);
+
+      if (batch.features == nullptr || batch.labels == nullptr) {
+        std::cerr << "Error: Failed to get batch from DataLoader" << std::endl;
+        return -1.0f;
+      }
+
+      autograd::Variable *x = autograd::create_leaf(graph_arena, 
+                                                     batch.features, false);
+      autograd::Variable *y = autograd::create_leaf(graph_arena, 
+                                                     batch.labels, false);
+
+      autograd::Variable *pred = model->forward(graph_arena, x);
+      autograd::Variable *loss = criterion->forward(graph_arena, pred, y);
+
+      total_loss += loss->data->storage->data[loss->data->offset];
+      num_batches++;
+
+      graph_arena->pop_to(start_pos);
+    }
+
+    return num_batches > 0 ? (total_loss / num_batches) : -1.0f;
   }
 };
 

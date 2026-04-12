@@ -1,6 +1,6 @@
 #pragma once
 #include "../../autograd/autograd.hpp"
-#include "../layers/module.hpp"
+#include "../core/module.hpp"
 #include <iostream>
 
 namespace gradientcore {

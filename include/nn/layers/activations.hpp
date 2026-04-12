@@ -1,5 +1,5 @@
 #pragma once
-#include "module.hpp"
+#include "../core/module.hpp"
 
 namespace gradientcore {
 namespace nn {

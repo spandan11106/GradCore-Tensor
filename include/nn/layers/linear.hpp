@@ -1,6 +1,6 @@
 #pragma once
 #include "../../tensor/prng.hpp"
-#include "module.hpp"
+#include "../core/module.hpp"
 #include <cmath>
 #include <iostream>
 
