@@ -91,6 +91,45 @@ public:
     std::cout << "Loaded " << features.size() << " samples" << std::endl;
   }
 
+  // MNIST CSV format: label in column 0, 784 pixel values in columns 1-784
+  static void parse_mnist_csv(
+      const std::vector<std::vector<std::string>> &csv_data,
+      std::vector<std::vector<float>> &features,
+      std::vector<std::vector<float>> &labels) {
+    features.clear();
+    labels.clear();
+
+    for (const auto &row : csv_data) {
+      if (row.size() < 785) {  // 1 label + 784 pixels
+        continue;
+      }
+
+      // Extract label from column 0
+      std::vector<float> label_vec;
+      try {
+        float label = std::stof(row[0]);
+        label_vec.push_back(label);
+      } catch (...) {
+        label_vec.push_back(0.0f);
+      }
+      labels.push_back(label_vec);
+
+      // Extract 784 pixels from columns 1-784
+      std::vector<float> feature_vec;
+      for (uint32_t i = 1; i <= 784; i++) {
+        try {
+          float val = std::stof(row[i]);
+          feature_vec.push_back(val);
+        } catch (...) {
+          feature_vec.push_back(0.0f);
+        }
+      }
+      features.push_back(feature_vec);
+    }
+
+    std::cout << "Loaded " << features.size() << " samples" << std::endl;
+  }
+
   static void normalize_minmax(
       std::vector<std::vector<float>> &features) {
     if (features.empty() || features[0].empty()) return;

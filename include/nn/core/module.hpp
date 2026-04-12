@@ -64,6 +64,14 @@ public:
       auto *m = _modules[i];
       std::string module_prefix = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
       m->_build_parameters_recursive(module_prefix);
+      
+      for (auto *p : m->_cached_parameters) {
+        _cached_parameters.push_back(p);
+      }
+      
+      for (auto &kv : m->_named_parameters) {
+        _named_parameters[module_prefix + "." + kv.first] = kv.second;
+      }
     }
   }
 
@@ -77,6 +85,10 @@ public:
       auto *m = _modules[i];
       std::string module_prefix = prefix.empty() ? std::to_string(i) : prefix + "." + std::to_string(i);
       m->_build_named_parameters_recursive(module_prefix);
+      
+      for (auto &kv : m->_named_parameters) {
+        _named_parameters[module_prefix + "." + kv.first] = kv.second;
+      }
     }
   }
 
