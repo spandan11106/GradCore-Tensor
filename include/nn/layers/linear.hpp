@@ -1,6 +1,7 @@
 #pragma once
 #include "../../tensor/prng.hpp"
 #include "../core/module.hpp"
+#include "../utils/initialization.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -61,18 +62,10 @@ public:
       return;
     }
 
-    float bound = std::sqrt(1.0f / static_cast<float>(in_features));
-
-    for (uint64_t i = 0; i < weight->data->size; i++) {
-      weight->data->storage->data[weight->data->offset + i] =
-          ((prng::randf() * 2.0f) - 1.0f) * bound;
-    }
+    init::kaiming_normal_(weight);
 
     if (bias != nullptr && bias->data != nullptr) {
-      for (uint64_t i = 0; i < bias->data->size; i++) {
-        bias->data->storage->data[bias->data->offset + i] =
-            ((prng::randf() * 2.0f) - 1.0f) * bound;
-      }
+      init::zeros_(bias);
     }
   }
 

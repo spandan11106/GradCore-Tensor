@@ -29,8 +29,7 @@
  *   └── model.hpp         User-friendly Model class (Keras-like)
  * 
  * utils/                  - Utility functions
- *   ├── initialization.hpp Weight initialization (Xavier, He, etc.)
- *   └── metrics.hpp       Evaluation metrics (Accuracy, Precision, etc.)
+ *   └── initialization.hpp Weight initialization (Xavier, Kaiming, etc.)
  */
 
 // Core abstractions
@@ -53,6 +52,9 @@
 
 // High-level API
 #include "models/model.hpp"
+
+// Utility functions
+#include "utils/initialization.hpp"
 
 namespace gradientcore {
 namespace nn {
