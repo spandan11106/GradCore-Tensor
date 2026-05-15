@@ -7,7 +7,7 @@ BIN_DIR="./bin"
 
 mkdir -p $BIN_DIR
 
-# Linker flags: 
+# Linker flags:
 # -L points to root build folder
 # -lgradientcore links the built .so
 # -Wl,-rpath tells the OS where to find the .so at runtime
@@ -19,4 +19,8 @@ g++ train.cpp $FLAGS -o $BIN_DIR/train_mnist
 echo "Compiling MNIST Inference..."
 g++ inference.cpp $FLAGS -o $BIN_DIR/inference_mnist
 
+echo "Compiling Autoencoder..."
+g++ autoencoder.cpp $FLAGS -o $BIN_DIR/autoencoder
+
 echo "Build complete. Ensure mnist_train.csv and mnist_test.csv are in data/."
+
