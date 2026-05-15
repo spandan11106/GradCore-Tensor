@@ -9,7 +9,7 @@ BatchNorm1d::BatchNorm1d(Arena *perm_arena, uint32_t num_features,
                          float momentum, float epsilon)
     : num_features(num_features), momentum(momentum), epsilon(epsilon),
       num_batches_tracked(0) {
-  
+
   if (num_features == 0) {
     std::cerr << "Error: BatchNorm1d num_features must be > 0" << std::endl;
     gamma = nullptr;
@@ -31,7 +31,7 @@ BatchNorm1d::BatchNorm1d(Arena *perm_arena, uint32_t num_features,
   }
   gamma = autograd::create_leaf(perm_arena, gamma_tensor, true);
   register_parameter(gamma);
-  
+
   init::ones_(gamma);
 
   Tensor *beta_tensor = tensor_create(perm_arena, 2, param_shape);
@@ -44,7 +44,7 @@ BatchNorm1d::BatchNorm1d(Arena *perm_arena, uint32_t num_features,
   }
   beta = autograd::create_leaf(perm_arena, beta_tensor, true);
   register_parameter(beta);
-  
+
   init::zeros_(beta);
 
   running_mean = tensor_create(perm_arena, 2, param_shape);
@@ -54,6 +54,7 @@ BatchNorm1d::BatchNorm1d(Arena *perm_arena, uint32_t num_features,
     return;
   }
   init::zeros_(autograd::create_leaf(perm_arena, running_mean, false));
+  register_parameter(autograd::create_leaf(perm_arena, running_mean, false));
 
   running_var = tensor_create(perm_arena, 2, param_shape);
   if (running_var == nullptr) {
@@ -61,24 +62,28 @@ BatchNorm1d::BatchNorm1d(Arena *perm_arena, uint32_t num_features,
     return;
   }
   init::ones_(autograd::create_leaf(perm_arena, running_var, false));
+  register_parameter(autograd::create_leaf(perm_arena, running_var, false));
 }
 
 autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
-                                        autograd::Variable *x) {
+                                         autograd::Variable *x) {
   if (!x || !x->data || !gamma || !beta) {
-    std::cerr << "Error: Invalid input to BatchNorm1d or layer not initialized" << std::endl;
+    std::cerr << "Error: Invalid input to BatchNorm1d or layer not initialized"
+              << std::endl;
     return nullptr;
   }
 
   if (x->data->ndims != 2) {
-    std::cerr << "Error: BatchNorm1d expects 2D input [batch_size, features]" << std::endl;
+    std::cerr << "Error: BatchNorm1d expects 2D input [batch_size, features]"
+              << std::endl;
     std::cerr << "       Got " << x->data->ndims << "D tensor" << std::endl;
     return nullptr;
   }
 
   if (x->data->shape[1] != num_features) {
     std::cerr << "Error: Input features mismatch in BatchNorm1d" << std::endl;
-    std::cerr << "       Expected: " << num_features << " Got: " << x->data->shape[1] << std::endl;
+    std::cerr << "       Expected: " << num_features
+              << " Got: " << x->data->shape[1] << std::endl;
     return nullptr;
   }
 
@@ -86,7 +91,7 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
   uint32_t num_feats = x->data->shape[1];
 
   if (_training) {
-    
+
     uint32_t out_shape[2] = {batch_size, num_feats};
     Tensor *out_tensor = tensor_create(compute_arena, 2, out_shape);
     if (!out_tensor) {
@@ -94,8 +99,9 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
       return nullptr;
     }
 
-    autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
-    
+    autograd::Variable *out =
+        autograd::create_leaf(compute_arena, out_tensor, true);
+
     float *in_data = x->data->storage->data + x->data->offset;
     float *out_data = out->data->storage->data + out->data->offset;
     float *gamma_data = gamma->data->storage->data + gamma->data->offset;
@@ -138,8 +144,9 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
       return nullptr;
     }
 
-    autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
-    
+    autograd::Variable *out =
+        autograd::create_leaf(compute_arena, out_tensor, true);
+
     float *in_data = x->data->storage->data + x->data->offset;
     float *out_data = out->data->storage->data + out->data->offset;
     float *gamma_data = gamma->data->storage->data + gamma->data->offset;
@@ -150,7 +157,8 @@ autograd::Variable *BatchNorm1d::forward(Arena *compute_arena,
     for (uint32_t i = 0; i < batch_size; i++) {
       for (uint32_t j = 0; j < num_feats; j++) {
         uint64_t idx = (uint64_t)i * num_feats + j;
-        float normalized = (in_data[idx] - mean_data[j]) / std::sqrt(var_data[j] + epsilon);
+        float normalized =
+            (in_data[idx] - mean_data[j]) / std::sqrt(var_data[j] + epsilon);
         out_data[idx] = normalized * gamma_data[j] + beta_data[j];
       }
     }
@@ -163,7 +171,7 @@ BatchNorm2d::BatchNorm2d(Arena *perm_arena, uint32_t num_features,
                          float momentum, float epsilon)
     : num_features(num_features), momentum(momentum), epsilon(epsilon),
       num_batches_tracked(0) {
-  
+
   if (num_features == 0) {
     std::cerr << "Error: BatchNorm2d num_features must be > 0" << std::endl;
     gamma = nullptr;
@@ -216,21 +224,25 @@ BatchNorm2d::BatchNorm2d(Arena *perm_arena, uint32_t num_features,
 }
 
 autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
-                                        autograd::Variable *x) {
+                                         autograd::Variable *x) {
   if (!x || !x->data || !gamma || !beta) {
-    std::cerr << "Error: Invalid input to BatchNorm2d or layer not initialized" << std::endl;
+    std::cerr << "Error: Invalid input to BatchNorm2d or layer not initialized"
+              << std::endl;
     return nullptr;
   }
 
   if (x->data->ndims != 4) {
-    std::cerr << "Error: BatchNorm2d expects 4D input [batch, channels, height, width]" << std::endl;
+    std::cerr << "Error: BatchNorm2d expects 4D input [batch, channels, "
+                 "height, width]"
+              << std::endl;
     std::cerr << "       Got " << x->data->ndims << "D tensor" << std::endl;
     return nullptr;
   }
 
   if (x->data->shape[1] != num_features) {
     std::cerr << "Error: Input channels mismatch in BatchNorm2d" << std::endl;
-    std::cerr << "       Expected: " << num_features << " Got: " << x->data->shape[1] << std::endl;
+    std::cerr << "       Expected: " << num_features
+              << " Got: " << x->data->shape[1] << std::endl;
     return nullptr;
   }
 
@@ -246,8 +258,9 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
     return nullptr;
   }
 
-  autograd::Variable *out = autograd::create_leaf(compute_arena, out_tensor, true);
-  
+  autograd::Variable *out =
+      autograd::create_leaf(compute_arena, out_tensor, true);
+
   float *in_data = x->data->storage->data + x->data->offset;
   float *out_data = out->data->storage->data + out->data->offset;
   float *gamma_data = gamma->data->storage->data + gamma->data->offset;
@@ -264,7 +277,8 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
       float sum = 0.0f;
       for (uint32_t b = 0; b < batch_size; b++) {
         for (uint64_t s = 0; s < spatial_size; s++) {
-          uint64_t idx = (uint64_t)b * channels * spatial_size + c * spatial_size + s;
+          uint64_t idx =
+              (uint64_t)b * channels * spatial_size + c * spatial_size + s;
           sum += in_data[idx];
         }
       }
@@ -273,7 +287,8 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
       float var_sum = 0.0f;
       for (uint32_t b = 0; b < batch_size; b++) {
         for (uint64_t s = 0; s < spatial_size; s++) {
-          uint64_t idx = (uint64_t)b * channels * spatial_size + c * spatial_size + s;
+          uint64_t idx =
+              (uint64_t)b * channels * spatial_size + c * spatial_size + s;
           float diff = in_data[idx] - batch_mean;
           var_sum += diff * diff;
         }
@@ -283,7 +298,8 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
       float inv_std = 1.0f / std::sqrt(batch_var + epsilon);
       for (uint32_t b = 0; b < batch_size; b++) {
         for (uint64_t s = 0; s < spatial_size; s++) {
-          uint64_t idx = (uint64_t)b * channels * spatial_size + c * spatial_size + s;
+          uint64_t idx =
+              (uint64_t)b * channels * spatial_size + c * spatial_size + s;
           float normalized = (in_data[idx] - batch_mean) * inv_std;
           out_data[idx] = normalized * gamma_data[c] + beta_data[c];
         }
@@ -300,8 +316,10 @@ autograd::Variable *BatchNorm2d::forward(Arena *compute_arena,
     for (uint32_t b = 0; b < batch_size; b++) {
       for (uint32_t c = 0; c < channels; c++) {
         for (uint64_t s = 0; s < spatial_size; s++) {
-          uint64_t idx = (uint64_t)b * channels * spatial_size + c * spatial_size + s;
-          float normalized = (in_data[idx] - mean_data[c]) / std::sqrt(var_data[c] + epsilon);
+          uint64_t idx =
+              (uint64_t)b * channels * spatial_size + c * spatial_size + s;
+          float normalized =
+              (in_data[idx] - mean_data[c]) / std::sqrt(var_data[c] + epsilon);
           out_data[idx] = normalized * gamma_data[c] + beta_data[c];
         }
       }
