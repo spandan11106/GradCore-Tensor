@@ -7,7 +7,7 @@ void draw_mnist_digit(float *data) {
   for (uint32_t y = 0; y < 28; y++) {
     for (uint32_t x = 0; x < 28; x++) {
       float num = data[x + y * 28];
-      uint32_t col = 232 + (uint32_t)(num * 24);
+      uint32_t col = 232 + (uint32_t)(num * 23);
       printf("\x1b[48;5;%dm  ", col);
     }
     printf("\n");
@@ -51,6 +51,9 @@ int main() {
     std::cout << "Index out of range." << std::endl;
     return 1;
   }
+
+  std::cout << "\nDisplaying image for index " << n << ":" << std::endl;
+  draw_mnist_digit(features[n].data());
 
   uint32_t shape[2] = {1, 784};
   Tensor *input = tensor_create(graph_arena, 2, shape);
