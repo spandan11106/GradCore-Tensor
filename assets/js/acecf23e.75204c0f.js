@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs_site=globalThis.webpackChunkdocs_site||[]).push([[1903],{1912(s){s.exports=JSON.parse('{"blogBasePath":"/GradCore-Tensor/blog","blogTitle":"Blog","authorsListPath":"/GradCore-Tensor/blog/authors"}')}}]);
