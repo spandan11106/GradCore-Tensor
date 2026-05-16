@@ -99,3 +99,4 @@ scratch/
 !*.h
 !CMakeLists.txt
 !.gitignore
+/docs_site/node_modules
