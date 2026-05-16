@@ -1,0 +1,40 @@
+name: Deploy Documentation Website
+
+on:
+  push:
+    branches:
+      - main # Triggers the build whenever you push to main
+    paths:
+      - 'docs_site/**' # Only runs when files in your docs folder change
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Build and Deploy Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: docs_site/package-lock.json
+
+      - name: Install Project Dependencies
+        run: |
+          cd docs_site
+          npm ci
+
+      - name: Compile and Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          cd docs_site
+          npm run deploy
