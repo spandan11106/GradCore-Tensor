@@ -1,11 +1,12 @@
-name: Deploy Documentation Website
+name: Deploy Documentation
 
 on:
   push:
     branches:
-      - main # Triggers the build whenever you push to main
+      - main 
     paths:
-      - 'docs_site/**' # Only runs when files in your docs folder change
+      - 'docs_site/**'
+      - '.github/workflows/deploy-docs.yml'
 
 permissions:
   contents: write
@@ -14,27 +15,34 @@ jobs:
   deploy:
     name: Build and Deploy Docs
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-size: 20
+          cache: 'npm'
           cache-dependency-path: docs_site/package-lock.json
 
-      - name: Install Project Dependencies
+      - name: Install Dependencies
         run: |
           cd docs_site
           npm ci
 
-      - name: Compile and Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Docusaurus Site
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           cd docs_site
-          npm run deploy
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs_site/build
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'

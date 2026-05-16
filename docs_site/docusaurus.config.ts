@@ -3,15 +3,14 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'GradientCore',
-  tagline: 'High-Performance C++17 Deep Learning Framework',
-  favicon: 'img/favicon.ico',
+  title: 'GradCore-Tensor',
+  tagline: 'A Lightweight C++ Neural Network & Autograd Library',
+  
+  url: 'https://spandan11106.github.io', 
+  baseUrl: '/GradCore-Tensor/', 
 
-  // GitHub Pages Deployment Configuration
-  url: 'https://spandan11106.github.io',
-  baseUrl: '/GradCore-Tensor/',
-  organizationName: 'spandan11106',
-  projectName: 'GradCore-Tensor',
+  organizationName: 'spandan11106', // Your GitHub org/user name.
+  projectName: 'GradCore-Tensor', // Your repo name.
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
