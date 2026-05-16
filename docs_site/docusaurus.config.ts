@@ -23,11 +23,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/spandan11106/GradCore-Tensor/tree/main/docs_site/',
+          // editUrl: 'https://github.com/spandan11106/GradCore-Tensor/tree/main/docs_site/',
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/spandan11106/GradCore-Tensor/tree/main/docs_site/',
+          // editUrl: 'https://github.com/spandan11106/GradCore-Tensor/tree/main/docs_site/',
         },
         theme: {
           customCss: './src/css/custom.css',

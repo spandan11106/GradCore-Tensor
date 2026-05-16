@@ -4,27 +4,27 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* PyTorch-inspired Fiery Orange/Red */
+  --ifm-color-primary: #ee4c2c;
+  --ifm-color-primary-dark: #d64427;
+  --ifm-color-primary-darker: #ca4025;
+  --ifm-color-primary-darkest: #a7351f;
+  --ifm-color-primary-light: #f05e41;
+  --ifm-color-primary-lighter: #f1674c;
+  --ifm-color-primary-lightest: #f4826b;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* For dark mode */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ff6040;
+  --ifm-color-primary-dark: #e6563a;
+  --ifm-color-primary-darker: #d95236;
+  --ifm-color-primary-darkest: #b3432c;
+  --ifm-color-primary-light: #ff7053;
+  --ifm-color-primary-lighter: #ff785c;
+  --ifm-color-primary-lightest: #ff9079;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
