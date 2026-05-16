@@ -28,3 +28,7 @@
   --ifm-color-primary-lightest: #ff9079;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
+
+.navbar__logo {
+  height: 50px !important; /* The !important tag forces Infima to ignore its hidden 32px rule */
+}

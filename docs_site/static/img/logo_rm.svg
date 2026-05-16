@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <defs>
+    <mask id="orange-cutout">
+      <rect width="100%" height="100%" fill="white" />
+      
+      <polygon points="
+        150,106 
+        188.1051,128 
+        188.1051,172 
+        150,194 
+        111.8949,172 
+        111.8949,128" 
+        fill="black" 
+      />
+      
+      <line x1="150" y1="150" x2="150" y2="250" stroke="black" stroke-width="11" stroke-linecap="butt" />
+      <line x1="150" y1="150" x2="50" y2="92.265" stroke="black" stroke-width="11" stroke-linecap="butt" />
+      <line x1="150" y1="150" x2="250" y2="92.265" stroke="black" stroke-width="11" stroke-linecap="butt" />
+    </mask>
+  </defs>
+
+  <rect width="100%" height="100%" fill="none" />
+
+  <polygon points="
+    150,78 
+    212.3538,114 
+    212.3538,186 
+    150,222 
+    87.6462,186 
+    87.6462,114" 
+    fill="#FF6000" 
+    mask="url(#orange-cutout)" 
+  />
+
+  <g id="inner-cube">
+    <polygon points="
+      150,150 
+      127.4833,137 
+      150,124 
+      172.5167,137" 
+      fill="#F4F5F8" 
+    />
+    
+    <polygon points="
+      150,150 
+      127.4833,137 
+      127.4833,163 
+      150,176" 
+      fill="#C5C7D0" 
+    />
+    
+    <polygon points="
+      150,150 
+      172.5167,137 
+      172.5167,163 
+      150,176" 
+      fill="#818693" 
+    />
+  </g>
+</svg>

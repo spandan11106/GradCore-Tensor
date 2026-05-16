@@ -5,6 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'GradCore-Tensor',
   tagline: 'A Lightweight C++ Neural Network & Autograd Library',
+
+  favicon: 'img/logo_rm.svg',
   
   url: 'https://spandan11106.github.io', 
   baseUrl: '/GradCore-Tensor/', 
@@ -42,7 +44,7 @@ const config: Config = {
       title: 'GradientCore',
       logo: {
         alt: 'GradientCore Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo_rm.svg',
       },
       items: [
         {
