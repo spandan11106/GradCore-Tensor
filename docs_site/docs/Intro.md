@@ -1,31 +1,69 @@
 ---
 sidebar_position: 1
 title: Introduction
-slug: /
 ---
-# Welcome to GradientCore
+# GradCore-Tensor — C++ neural networks, simple and transparent
 
-**GradientCore** is a high-performance, lightweight Deep Learning framework written entirely from scratch in C++17. 
+GradCore-Tensor is a compact, high-performance C++ library for building, training, and running neural networks with an API inspired by PyTorch. It provides a clear, object-oriented implementation of tensors, an autograd engine, neural network building blocks, optimizers, and a lightweight data pipeline — all implemented from first principles so you can understand and extend every part of the stack.
 
-Designed for developers, researchers, and systems engineers, GradientCore provides a beautiful, PyTorch-like API while maintaining bare-metal C++ execution speeds. It achieves this with zero external dependencies (relying only on OpenMP for multi-threading) to deliver an uncompromised, transparent look into how neural networks operate under the hood.
+What this project gives you:
 
----
+- A minimal, readable C++ API for experimenting with automatic differentiation and model design.
 
-## The Motivation
+- Example-driven tutorials (MNIST, California Housing regression) that run natively in C++.
 
-Modern deep learning ecosystems like PyTorch and TensorFlow are incredibly powerful, but their immense size and heavy reliance on Python bindings can make it difficult to understand what is actually happening at the system level. 
+- A small footprint runtime without Python dependencies, suitable for learning, research prototypes, and embedding in native applications.
 
-GradientCore was built to bridge this gap. The motivation behind this framework is to provide a fully transparent, highly optimized, and educational environment where you can explore the exact mechanics of neural networks—from memory allocation to gradient computation—without sacrificing performance or API usability.
+## System requirements & important compatibility notice
 
-It proves that you do not need massive Python runtimes to build, train, and evaluate complex architectures like Autoencoders or deep regression networks.
+:::warning 
+**Important:** GradCore-Tensor is developed, tested, and supported on Linux. The memory allocator, threading model, and build pipelines are tuned for Linux toolchains and glibc-based environments. Building or running on Windows or macOS is not officially supported and may fail or produce incorrect behavior.
+:::
 
----
+If you must target another OS, expect to:
 
-## What Makes GradientCore Unique?
+- encounter build and runtime issues,
 
-GradientCore is engineered with advanced systems-level optimizations that rival production frameworks:
+- need to adapt low-level memory/threading code, and
 
-* **Zero-Allocation Execution:** GradientCore completely bypasses standard `malloc`/`free` overhead during training. It uses a custom, transactional **Arena Memory Allocator** that wipes the entire computation graph state clean in $O(1)$ time after every backward pass.
-* **Dynamic Autograd Engine:** Features a powerful define-by-run, reverse-mode automatic differentiation engine capable of building and executing complex dynamic computation graphs on the fly.
-* **Bare-Metal Performance:** Matrix multiplications and tensor operations are explicitly unrolled, cache-oblivious, and accelerated using **AVX2 / FMA SIMD** micro-kernels.
-* **Comprehensive Neural Network API:** Fully equipped with `Linear` layers, `BatchNorm1d`/`2d`, `Dropout`, over 10+ activation functions (ReLU, GELU, Swish, etc.), advanced loss functions, and state-of-the-art optimizers like `AdamW`, `RMSProp`, and `LBFGS`.
+- write/validate platform-specific tests.
+
+We recommend using a recent Linux distribution and GCC or Clang with at least C++17 support.
+
+## What you'll find in the docs
+
+- Getting Started: prerequisites, build instructions, and how to link GradCore-Tensor into your CMake project.
+
+- Tutorials: step-by-step C++ tutorials — California Housing regression and MNIST classification (training + inference).
+
+- Module deep dives: `tensor`, `autograd`, `nn` (layers, activations, losses), `optim`, and `data` with design rationale and code references.
+
+- API guidance: examples using the public headers and suggested patterns for model, training, and evaluation code.
+
+- Contributing: how to set up a dev environment, add new autograd ops or layers, run tests, and propose changes.
+
+## Project status and goals
+
+GradCore-Tensor is a student-led, research-first project (author: Class of 2028). The goals are:
+
+- clarity over feature bloat — demonstrate how core deep learning primitives are implemented in native C++,
+
+- provide a reproducible learning platform for students and researchers, and
+
+- provide an approachable base for contributions that improve correctness, performance, or API ergonomics.
+
+## Contributions & community
+
+Contributions are welcome. Useful ways to help:
+
+- add examples and tutorials that demonstrate real use cases,
+
+- implement and test new layers, activation functions, and optimizers,
+
+- improve documentation and API examples, or
+
+- add portability and CI to broaden platform support.
+
+See the Contributing Guide for setup steps, coding standards, and how to run the test suite. When opening issues or PRs, please include reproducible steps and system details (Linux distro, compiler version).
+
+**Acknowledgement:** This project was developed by a student (Class of 2028). Community feedback and pull requests are highly appreciated — they help make the library safer and more useful for others.

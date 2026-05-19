@@ -81,6 +81,8 @@ Thumbs.db
 .ycm_extra_conf.py
 compile_commands.json
 examples/mnist/bin/
+examples/regression_ex/bin/
+regression_ex/bin/
 
 # Local development
 local/
@@ -100,3 +102,4 @@ scratch/
 !CMakeLists.txt
 !.gitignore
 /docs_site/node_modules
+/docs_site/docs/.trash
