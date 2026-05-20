@@ -1,0 +1,10 @@
+{
+  "label": "Tutorials",
+  "position": 3,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "Hands-on tutorials for GradCore-Tensor. Each tutorial walks through a complete example — from raw data to trained model to inference."
+  }
+}

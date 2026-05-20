@@ -29,7 +29,7 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro"> {/* Link this to your tutorials page later */}
+            to="/docs/tutorials/tutorial-1-california-housing"> {/* Link this to your tutorials page later */}
             TUTORIALS
           </Link>
           <Link
