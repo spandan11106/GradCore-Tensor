@@ -9,6 +9,8 @@ This tutorial covers multi-class image classification using the MNIST handwritte
 
 The full source lives in `examples/mnist/`.
 
+Dataset - [Github](https://github.com/spandan11106/GradCore-Tensor/tree/main/examples/mnist/data)
+
 ---
 
 ## What you'll build
@@ -283,3 +285,13 @@ Loss is `MSELoss` between input and reconstruction — no labels needed. After t
 | `model.save` / `model.load` | Checkpoint persistence |
 | `autograd::create_leaf(..., false)` | Inference without gradient tracking |
 | `graph_arena->pop_to` | O(1) graph memory reclamation |
+
+## Next steps
+
+You now understand the core training loop and inference patterns. From here you can explore:
+
+- **Module deep dives** — how `autograd`, `tensor`, `nn`, and `optim` are implemented internally.
+
+- **Adding new layers** — see the Contributing Guide for how to add a custom activation or layer type.
+
+- **Extending the autoencoder** — try varying the bottleneck dimension or adding noise to inputs for denoising autoencoding.

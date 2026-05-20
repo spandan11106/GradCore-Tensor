@@ -9,6 +9,8 @@ This tutorial walks through the California Housing dataset regression example en
 
 The full source lives in `examples/regression_ex/`.
 
+Dataset - [Kaggle](https://www.kaggle.com/datasets/shraddha4ever20/california-housing-dataset)
+
 ---
 
 ## What you'll build
