@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs_site=globalThis.webpackChunkdocs_site||[]).push([[472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome","permalink":"/GradCore-Tensor/blog/welcome","unlisted":false,"date":"2021-08-26T00:00:00.000Z"}]}')}}]);
