@@ -1,0 +1,10 @@
+{
+  "label": "Models",
+  "position": 7,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "The high-level Model class — the single object that owns your network, handles compilation, training, evaluation, and persistence."
+  }
+}

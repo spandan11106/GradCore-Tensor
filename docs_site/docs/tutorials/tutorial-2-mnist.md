@@ -290,7 +290,7 @@ Loss is `MSELoss` between input and reconstruction — no labels needed. After t
 
 You now understand the core training loop and inference patterns. From here you can explore:
 
-- **Module deep dives** — how `autograd`, [`tensor`](../tensor_module/), `nn`, and `optim` are implemented internally.
+- **Module deep dives** — how `autograd`, [`tensor`](../tensor_module/), [`nn`](../nn_module/), and `optim` are implemented internally.
 
 - **Adding new layers** — see the [Contributing Guide](https://github.com/spandan11106/GradCore-Tensor?tab=contributing-ov-file#contributing-to-gradcore-tensor) for how to add a custom activation or layer type.
 

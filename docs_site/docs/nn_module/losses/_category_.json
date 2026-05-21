@@ -1,0 +1,10 @@
+{
+  "label": "Losses",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "nn-level loss function classes — thin wrappers over the tensor-level loss functions, ready to drop into a training loop."
+  }
+}

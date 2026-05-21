@@ -1,0 +1,10 @@
+{
+  "label": "nn Module",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "The high-level neural network API — layers, loss functions, optimizers, data loading, and the Model class. This is the primary interface for building and training networks in GradCore-Tensor."
+  }
+}

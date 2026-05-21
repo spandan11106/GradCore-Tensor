@@ -103,21 +103,19 @@ bool tensor_huber_loss_grad(..., float delta, Reduction);
 
 The California Housing tutorial uses `delta = 1.0` (the default) with house prices scaled to the [0, 5] range.
 
-**nn class**: `HuberLoss(float delta = 1.0f)`, exposed as `LossType::HUBER` in the `Model` API.
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
-```
-Loss
- │    MSE (steeper for large errors)
- │   /
- │  /    Huber
- │ /   _/
- │/  _/
- │ _/ ← transition at δ
- │/____________ L1 (linear beyond δ)
- └────────────────── |error|
-```
+**nn class**: `HuberLoss(float delta = 1.0f)`, exposed as `LossType::HUBER` in the enum.
 
----
+<iframe 
+  src={useBaseUrl('/visualizer/loss_graph.html')} 
+  width="100%" 
+  height="700px" 
+  style={{border: 'none', borderRadius: '12px'}}
+  title="Loss Function Visualization"
+></iframe>
+
+As you can see in the chart above...
 
 ## BCE Loss (Binary Cross-Entropy)
 

@@ -1,0 +1,10 @@
+{
+  "label": "Utils",
+  "position": 8,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Weight initialisation utilities — Kaiming, Xavier, uniform, normal, zeros, ones."
+  }
+}

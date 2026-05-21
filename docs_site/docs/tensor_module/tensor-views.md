@@ -17,15 +17,7 @@ Tensor *view = tensor_view(arena, src);
 
 Creates a new `Tensor` that is an exact copy of `src`'s metadata (`ndims`, `shape`, `strides`, `offset`, `size`) but **shares the same `TensorStorage`**. The new `Tensor` struct is allocated on `arena`; no float data is copied.
 
-```
-Original:                    View:
-Tensor {                     Tensor {
-  shape   = [3, 4]             shape   = [3, 4]
-  strides = [4, 1]             strides = [4, 1]
-  offset  = 0                  offset  = 0
-  storage = ──────────────►  storage = ──────► (same buffer)
-}                            }
-```
+![Tensor module overview](/img/Tenview.drawio.svg)
 
 `tensor_view` is the basis for both `tensor_reshape` and `tensor_transpose`.
 

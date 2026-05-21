@@ -1,0 +1,10 @@
+{
+  "label": "Core",
+  "position": 2,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Module and Sequential — the abstract base class and container that every layer in GradCore-Tensor is built on."
+  }
+}

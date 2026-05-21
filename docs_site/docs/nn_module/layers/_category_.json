@@ -1,0 +1,10 @@
+{
+  "label": "Layers",
+  "position": 3,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Concrete layer implementations — Linear, activations, BatchNorm, and Dropout. These are the building blocks you stack inside a Sequential."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "label": "Data",
+  "position": 5,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Dataset, DataLoader, and CSVLoader — the data pipeline from raw CSV files to batched tensors ready for training."
+  }
+}

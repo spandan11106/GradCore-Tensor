@@ -30,14 +30,8 @@ struct Tensor {
 
 ## Anatomy of a Tensor
 
-```
-Tensor (shape=[3,4], strides=[4,1], offset=0)
-         │
-         └── TensorStorage
-               data ──► [a00, a01, a02, a03,
-                          a10, a11, a12, a13,
-                          a20, a21, a22, a23]
-```
+![Tensor module overview](/img/Tensor.drawio.svg)
+
 
 A 3×4 matrix laid out in row-major order. Element `[i, j]` is at:
 

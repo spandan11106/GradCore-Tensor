@@ -1,0 +1,10 @@
+{
+  "label": "Training",
+  "position": 6,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Trainer and TrainingStats — the low-level training loop engine that Model::train() is built on top of."
+  }
+}

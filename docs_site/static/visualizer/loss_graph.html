@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loss Functions: MSE vs L1 vs Huber</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1a1a1e;
+            color: #e4e4e7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #27272a;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #ffffff;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #18181b;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        input[type=range] {
+            width: 300px;
+            accent-color: #10b981;
+        }
+        .delta-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #10b981;
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Loss Function Visualizer</h2>
+        
+        <div class="controls">
+            <label for="deltaSlider"><strong>Huber Transition (&delta;):</strong></label>
+            <input type="range" id="deltaSlider" min="0.1" max="5.0" step="0.1" value="1.0">
+            <span class="delta-value" id="deltaValue">1.0</span>
+        </div>
+
+        <canvas id="lossChart"></canvas>
+    </div>
+
+    <script>
+        // DOM Elements
+        const ctx = document.getElementById('lossChart').getContext('2d');
+        const deltaSlider = document.getElementById('deltaSlider');
+        const deltaValueDisplay = document.getElementById('deltaValue');
+
+        // Generate X values (0 to 10 with a step of 0.1 for a smooth curve)
+        const xValues = Array.from({ length: 101 }, (_, i) => i / 10);
+
+        // Mathematical Definitions for Loss Functions
+        const calcMSE = (x) => 0.5 * Math.pow(x, 2);
+        const calcL1 = (x) => x;
+        const calcHuber = (x, delta) => {
+            if (x <= delta) {
+                return 0.5 * Math.pow(x, 2);
+            } else {
+                return delta * (x - 0.5 * delta);
+            }
+        };
+
+        // Initialize Static Data
+        const mseData = xValues.map(calcMSE);
+        const l1Data = xValues.map(calcL1);
+        
+        // Initialize Dynamic Huber Data
+        let currentDelta = parseFloat(deltaSlider.value);
+        let huberData = xValues.map(x => calcHuber(x, currentDelta));
+
+        // Setup Chart.js
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: xValues,
+                datasets: [
+                    {
+                        label: 'MSE (y = x²/2)',
+                        data: mseData,
+                        borderColor: '#ef4444', // Red
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'L1 (y = |x|)',
+                        data: l1Data,
+                        borderColor: '#3b82f6', // Blue
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Huber Loss',
+                        data: huberData,
+                        borderColor: '#10b981', // Green
+                        borderWidth: 4,
+                        fill: false,
+                        pointRadius: 0,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '|error|',
+                            color: '#a1a1aa',
+                            font: { size: 14 }
+                        },
+                        ticks: { color: '#71717a' },
+                        grid: { color: '#3f3f46' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Loss Penalty',
+                            color: '#a1a1aa',
+                            font: { size: 14 }
+                        },
+                        max: 12, // Caps the Y-axis so the MSE curve doesn't warp the scale too much
+                        ticks: { color: '#71717a' },
+                        grid: { color: '#3f3f46' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#e4e4e7',
+                            font: { size: 14 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: (context) => `|error|: ${context[0].label}`,
+                            label: (context) => `${context.dataset.label}: ${context.raw.toFixed(2)}`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add Event Listener to Update the Graph Dynamically
+        deltaSlider.addEventListener('input', (event) => {
+            currentDelta = parseFloat(event.target.value);
+            
+            // Update the text label
+            deltaValueDisplay.textContent = currentDelta.toFixed(1);
+            
+            // Recalculate Huber Data
+            chart.data.datasets[2].data = xValues.map(x => calcHuber(x, currentDelta));
+            
+            // Re-render the chart
+            chart.update();
+        });
+    </script>
+</body>
+</html>

@@ -11,18 +11,8 @@ The `Arena` is GradCore-Tensor's memory backbone. If you've ever watched a neura
 
 An arena (also called a "linear allocator" or "bump allocator") works like this:
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                        Reserved Virtual Memory                   │
-├──────────────────────────────────┬───────────────────────────────┤
-│         Committed Pages          │    Not yet committed (free)   │
-├─────────────────────┬────────────┤                               │
-│   Arena Header      │  Used data │                               │
-│   (metadata)        │            │                               │
-│                     ▲            ▲                               │
-│                  base_pos       pos                              │
-└──────────────────────────────────────────────────────────────────┘
-```
+![Tensor module overview](/img/Arena.drawio.svg)
+
 
 To allocate, the arena simply advances `pos` by the requested size. To "free" an entire epoch's worth of computation graphs, it resets `pos` back to where it was before. No per-object tracking, no fragmentation, no surprises.
 
@@ -154,15 +144,8 @@ ArenaTemp scratch = scratch_get(conflicts, num_conflicts);
 
 When a growable arena runs out of reserved virtual memory, `push_raw` chains a new chunk:
 
-```
-┌──────────────────┐     ┌──────────────────┐
-│  Original chunk  │ ←── │   Grown chunk    │
-│  (prev = null)   │     │  (prev = orig)   │
-│  base_pos = 0    │     │  base_pos = big  │
-└──────────────────┘     └──────────────────┘
-                              ▲
-                           current
-```
+![Tensor module overview](/img/Growable_Mem.drawio.svg)
+
 
 `get_pos()` returns `current->base_pos + current->pos` — a single global offset that works correctly across all chunks. `pop_to` walks the linked list backwards, releasing chunks that are completely freed.
 

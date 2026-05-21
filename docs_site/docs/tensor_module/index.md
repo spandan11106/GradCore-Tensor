@@ -33,36 +33,8 @@ tensor/
 
 Here's how tensors relate to everything else:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                        Your Code                        │
-└───────────────────────────┬─────────────────────────────┘
-                            │
-              ┌─────────────▼─────────────┐
-              │        nn::Model           │
-              │   (compile / train / eval) │
-              └─────────────┬─────────────┘
-                            │
-         ┌──────────────────▼──────────────────┐
-         │          autograd::Variable          │
-         │  wraps Tensor + tracks gradient info │
-         └──────────────────┬──────────────────┘
-                            │
-         ┌──────────────────▼──────────────────┐
-         │               Tensor                │
-         │  shape │ strides │ offset │ storage  │
-         └──────────────────┬──────────────────┘
-                            │
-         ┌──────────────────▼──────────────────┐
-         │           TensorStorage             │
-         │       float* data │ uint64_t size   │
-         └──────────────────┬──────────────────┘
-                            │
-         ┌──────────────────▼──────────────────┐
-         │              Arena                  │
-         │  reserve → commit → bump-allocate   │
-         └─────────────────────────────────────┘
-```
+![Tensor module overview](/img/Intro.drawio.svg)
+
 
 A `Tensor` does not own its memory. It holds a pointer to a `TensorStorage`, which in turn holds a pointer into an `Arena`'s slab. This design means allocating a tensor is just a pointer bump — no `malloc`, no heap fragmentation, no GC pausing at the worst possible moment.
 

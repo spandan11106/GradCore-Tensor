@@ -85,6 +85,10 @@ const config: Config = {
               to: '/blog',
             },
             {
+              label: 'Contributing',
+              to: 'https://github.com/spandan11106/GradCore-Tensor?tab=contributing-ov-file#contributing-to-gradcore-tensor'
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/spandan11106/GradCore-Tensor',
             },
