@@ -1,0 +1,10 @@
+{
+  "label": "Loss Functions",
+  "position": 6,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Every loss function in GradCore-Tensor, including their forward computations, backward passes, and when to use each one."
+  }
+}

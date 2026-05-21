@@ -1,0 +1,10 @@
+{
+  "label": "Activations",
+  "position": 5,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "All activation functions and their backward passes — from the classic ReLU to the modern GELU."
+  }
+}

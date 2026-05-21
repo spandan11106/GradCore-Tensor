@@ -1,0 +1,10 @@
+{
+  "label": "Tensor Module",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Deep-dive documentation for GradCore-Tensor's tensor layer — memory management, data structures, arithmetic, activations, and loss functions."
+  }
+}

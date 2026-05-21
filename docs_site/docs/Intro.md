@@ -36,9 +36,9 @@ Use the sidebar to navigate. The main sections are:
 
 - **Getting Started** — prerequisites, build instructions, and how to link GradCore-Tensor into your own CMake project.
 
-- **Tutorials** — step-by-step walkthroughs of the California Housing regression and MNIST classification examples, covering data loading, model definition, the training loop, saving/loading, and inference.
+- **[Tutorials](./tutorials/tutorial-1-california-housing)** — step-by-step walkthroughs of the California Housing regression and MNIST classification examples, covering data loading, model definition, the training loop, saving/loading, and inference.
 
-- **Module deep dives** — `tensor`, `autograd`, `nn`, `optim`, and `data` with design rationale and code references.
+- **Module deep dives** — [`tensor`](./tensor_module/), `autograd`, `nn`, `optim`, and `data` with design rationale and code references.
 
 - **Contributing** — how to set up a dev environment, add new autograd ops or layers, run the examples as validation, and propose changes.
 
@@ -54,6 +54,6 @@ GradCore-Tensor is a student-led, research-first project (author: Class of 2028)
 
 ## Contributions & community
 
-Contributions are welcome — new layers, optimizers, documentation improvements, and portability work especially so. See the Contributing Guide for setup steps, coding standards, and how to run the example suite. When opening issues or PRs, please include reproducible steps and system details (Linux distro, compiler version).
+Contributions are welcome — new layers, optimizers, documentation improvements, and portability work especially so. See the [Contributing Guide](https://github.com/spandan11106/GradCore-Tensor?tab=contributing-ov-file#contributing-to-gradcore-tensor) for setup steps, coding standards, and how to run the example suite. When opening issues or PRs, please include reproducible steps and system details (Linux distro, compiler version).
 
 **Acknowledgements:** This project was developed by a student (Class of 2028). Community feedback and pull requests are highly appreciated — they help make the library safer and more useful for others.

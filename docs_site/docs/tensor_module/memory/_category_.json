@@ -1,0 +1,10 @@
+{
+  "label": "Memory",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Arena allocator, platform abstraction layer, and PRNG — the memory infrastructure that everything else is built on."
+  }
+}

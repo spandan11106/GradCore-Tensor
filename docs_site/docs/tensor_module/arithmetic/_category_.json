@@ -1,0 +1,10 @@
+{
+  "label": "Arithmetic",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Element-wise operations, matrix multiplication, and reduction — the mathematical building blocks of every layer."
+  }
+}
