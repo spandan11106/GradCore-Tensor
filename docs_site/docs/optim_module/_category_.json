@@ -1,0 +1,10 @@
+{
+  "label": "Optimizers",
+  "position": 5,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Every optimizer in GradCore-Tensor — SGD, Adam, AdamW, RMSprop, Adagrad, and L-BFGS — with update rules, constructor arguments, and when to use each one."
+  }
+}

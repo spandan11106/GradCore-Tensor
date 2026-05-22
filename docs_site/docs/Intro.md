@@ -38,7 +38,7 @@ Use the sidebar to navigate. The main sections are:
 
 - **[Tutorials](./tutorials/tutorial-1-california-housing)** — step-by-step walkthroughs of the California Housing regression and MNIST classification examples, covering data loading, model definition, the training loop, saving/loading, and inference.
 
-- **Module deep dives** — [`tensor`](./tensor_module/), `autograd`, `nn`, `optim`, and `data` with design rationale and code references.
+- **Module deep dives** — [`tensor`](./tensor_module/index.md), `autograd`, [`nn`](./nn_module/index.md), and [`optim`](./optim_module/overview.md) with design rationale and code references.
 
 - **Contributing** — how to set up a dev environment, add new autograd ops or layers, run the examples as validation, and propose changes.
 
