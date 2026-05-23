@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs_site=globalThis.webpackChunkdocs_site||[]).push([[7472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Building a C++ Neural Network Library from Scratch (Because I Couldn\'t Stand Python)","permalink":"/GradCore-Tensor/blog/gradientcore-journey","unlisted":false,"date":"2026-05-24T00:00:00.000Z"}]}')}}]);

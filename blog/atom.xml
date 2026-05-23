@@ -2,41 +2,66 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://spandan11106.github.io/GradCore-Tensor/blog</id>
     <title>GradCore-Tensor Blog</title>
-    <updated>2021-08-26T00:00:00.000Z</updated>
+    <updated>2026-05-24T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://spandan11106.github.io/GradCore-Tensor/blog"/>
     <subtitle>GradCore-Tensor Blog</subtitle>
     <icon>https://spandan11106.github.io/GradCore-Tensor/img/logo_rm.svg</icon>
     <entry>
-        <title type="html"><![CDATA[Welcome]]></title>
-        <id>https://spandan11106.github.io/GradCore-Tensor/blog/welcome</id>
-        <link href="https://spandan11106.github.io/GradCore-Tensor/blog/welcome"/>
-        <updated>2021-08-26T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Docusaurus blogging features are powered by the blog plugin.]]></summary>
-        <content type="html"><![CDATA[<p><a href="https://docusaurus.io/docs/blog" target="_blank" rel="noopener noreferrer" class="">Docusaurus blogging features</a> are powered by the <a href="https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog" target="_blank" rel="noopener noreferrer" class="">blog plugin</a>.</p>
-<p>Here are a few tips you might find useful.</p>
-<!-- -->
-<p>Simply add Markdown files (or folders) to the <code>blog</code> directory.</p>
-<p>Regular blog authors can be added to <code>authors.yml</code>.</p>
-<p>The blog post date can be extracted from filenames, such as:</p>
+        <title type="html"><![CDATA[Building a C++ Neural Network Library from Scratch (Because I Couldn't Stand Python)]]></title>
+        <id>https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey</id>
+        <link href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey"/>
+        <updated>2026-05-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The story behind building GradientCore - a machine learning library from scratch in C++.]]></summary>
+        <content type="html"><![CDATA[<p>I’m really happy to say that I’ve finally finished the core documentation for GradientCore — my machine learning library built from scratch in C++. As a student, this project has been a massive learning journey.</p>
+<p>Writing all the documentation at the very end turned out to be quite frustrating. I should have been updating the docs along the way instead of trying to do everything in one big push. That was a hard lesson learned.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-this-project-started">How This Project Started<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#how-this-project-started" class="hash-link" aria-label="Direct link to How This Project Started" title="Direct link to How This Project Started" translate="no">​</a></h2>
+<p>This project was born out of my strong dislike for coding in Python. I know Python is supposed to be easy, but for some reason the logic never flows naturally for me when I use it. I’ve always felt that C++ is the stronger language for this kind of work (though I’m sure life will humble me on this opinion one day).</p>
+<p><img decoding="async" loading="lazy" alt="Hating on Python" src="https://spandan11106.github.io/GradCore-Tensor/assets/images/meme-96375f6872d146903b27f92545d51b3d.jpg" width="800" height="467" class="img_ev3q"></p>
+<p>That combination — frustration with Python and a real interest in machine learning — is what got this project going.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-early-days">The Early Days<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#the-early-days" class="hash-link" aria-label="Direct link to The Early Days" title="Direct link to The Early Days" translate="no">​</a></h2>
+<p>I had no clear idea how to begin. So, like many others, I first asked ChatGPT for help. That didn’t work out very well.</p>
+<p>After that, I found a great YouTube video by <a href="https://github.com/Magicalbat" target="_blank" rel="noopener noreferrer" class="">Magicalbat</a> called "<a href="https://youtu.be/hL_n_GljC0I?si=d8fTJE5A83PzAIPJ" target="_blank" rel="noopener noreferrer" class="">Coding a Machine Learning Library in C from Scratch</a>". That two-hour video was incredibly helpful. I watched it while building the first version of the library at the same time. You can still see those early matrix-based experiments in the original repository: GradientCore.</p>
+<p>The arena memory allocator from his project is still a core part of GradientCore today. A big thank you to him for that foundation.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-great-tensor-pivot">The Great Tensor Pivot<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#the-great-tensor-pivot" class="hash-link" aria-label="Direct link to The Great Tensor Pivot" title="Direct link to The Great Tensor Pivot" translate="no">​</a></h2>
+<p>There was one major issue with the first version: it was built entirely around matrices. To make the library actually useful and expandable, I needed to switch to a proper tensor system.</p>
+<p>I tried doing this in a separate branch using AI assistance. Let’s just say it went badly. The code ended up as a complete mess — so tangled that I couldn’t understand it anymore. That failed branch is still there as a reminder.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="starting-over">Starting Over<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#starting-over" class="hash-link" aria-label="Direct link to Starting Over" title="Direct link to Starting Over" translate="no">​</a></h2>
+<p>So I created a new repository and rebuilt everything from the beginning. I still used AI during this process, but I changed my approach. This time I did my own research first, made sure I understood the concepts, and only used AI for corrections and improvements.</p>
+<p>We built it step by step:</p>
 <ul>
-<li class=""><code>2019-05-30-welcome.md</code></li>
-<li class=""><code>2019-05-30-welcome/index.md</code></li>
+<li class="">Tensor definitions and memory management</li>
+<li class="">Autograd system</li>
+<li class="">Optimizers</li>
+<li class="">Neural network module</li>
 </ul>
-<p>A blog post folder can be convenient to co-locate blog post images:</p>
-<p><img decoding="async" loading="lazy" alt="Docusaurus Plushie" src="https://spandan11106.github.io/GradCore-Tensor/assets/images/docusaurus-plushie-banner-a60f7593abca1e3eef26a9afa244e4fb.jpeg" width="1500" height="500" class="img_ev3q"></p>
-<p>The blog supports tags as well!</p>
-<p><strong>And if you don't want a blog</strong>: just delete this directory, and use <code>blog: false</code> in your Docusaurus config.</p>]]></content>
+<p>The library broke down many times along the way — bugs from me, from the AI, and from everything in between. But we kept going and eventually got somewhere.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-things-stand-now">Where Things Stand Now<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#where-things-stand-now" class="hash-link" aria-label="Direct link to Where Things Stand Now" title="Direct link to Where Things Stand Now" translate="no">​</a></h2>
+<p>GradientCore is now somewhat usable. I know it’s nowhere near the level of PyTorch, but every project has to start somewhere. So far, all testing has been done only on my local machine, so there are probably still bugs lurking around. That’s completely normal — and exactly why contributors would be very welcome.</p>
+<p>There are already several more mature C++ machine learning libraries out there, such as:</p>
+<ul>
+<li class=""><strong>libtorch</strong> (PyTorch’s C++ API)</li>
+<li class=""><strong>mlpack</strong></li>
+<li class=""><strong>Flashlight</strong></li>
+<li class=""><strong>dlib</strong></li>
+</ul>
+<p>But here we are, building our own version.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="thank-you">Thank You<a href="https://spandan11106.github.io/GradCore-Tensor/blog/gradientcore-journey#thank-you" class="hash-link" aria-label="Direct link to Thank You" title="Direct link to Thank You" translate="no">​</a></h2>
+<ul>
+<li class=""><a href="https://github.com/Magicalbat" target="_blank" rel="noopener noreferrer" class=""><strong>Magicalbat</strong></a> – for providing such a strong starting point</li>
+<li class=""><strong>PyTorch documentation</strong> – for being incredibly helpful</li>
+<li class=""><strong>Claude &amp; Grok</strong> – without your help, writing all this documentation would have been much more difficult. A lot of the documentation was AI-assisted, so if you find any gaps or awkward parts, that’s probably why — feel free to contribute and fix them!</li>
+</ul>
+<hr>
+<p><strong>P.S.</strong> — I plan to release a stable version soon. I’m also excited about eventually releasing this as a proper package so others can use it more easily.</p>]]></content>
         <author>
-            <name>Sébastien Lorber</name>
-            <uri>https://sebastienlorber.com</uri>
+            <name>Spandan</name>
+            <uri>https://github.com/spandan11106</uri>
         </author>
-        <author>
-            <name>Yangshun Tay</name>
-            <uri>https://linkedin.com/in/yangshun</uri>
-        </author>
-        <category label="Facebook" term="Facebook"/>
-        <category label="Hello" term="Hello"/>
-        <category label="Docusaurus" term="Docusaurus"/>
+        <category label="C++" term="C++"/>
+        <category label="Machine Learning" term="Machine Learning"/>
+        <category label="Deep Learning" term="Deep Learning"/>
+        <category label="GradientCore" term="GradientCore"/>
+        <category label="From Scratch" term="From Scratch"/>
     </entry>
 </feed>
