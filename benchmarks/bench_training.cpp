@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
               cfg.ftz);
   std::printf("  per-trial ms/step:");
   for (double v : ms_per_step) std::printf(" %.4f", v);
-  std::printf("\n  final loss: %.6f (should match across variants)\n",
+  std::printf("\n  final loss: %.6f (identical for arena/malloc and simd/simd_omp;\n  scalar differs: no FMA, so rounding diverges over training)\n",
               last_loss);
 
   std::printf("RESULT ms_per_step %.6f\n", median);
